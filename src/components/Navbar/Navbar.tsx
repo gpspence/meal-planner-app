@@ -1,9 +1,10 @@
-import { Title, Container, Tabs } from '@mantine/core';
+import { Title, Container, Tabs, Text, Flex } from '@mantine/core';
 import { FaCalendarDay } from 'react-icons/fa';
 import { GiCook } from 'react-icons/gi';
 import { GoGraph } from 'react-icons/go';
-import { useNavigate, useParams } from 'react-router-dom';
-import classes from './Navbar.module.css';
+import { useLocation, useNavigate, useParams, } from 'react-router-dom';
+import PlannerTitle from '../PlannerTitle/PlannerTitle';
+import ColorSchemeToggle from '../ColorSchemeToggle/ColorSchemeToggle';
 
 interface TabRoutes {
     Planner: string
@@ -14,16 +15,30 @@ interface TabRoutes {
 const Navbar = () => {
 
     const navigate = useNavigate();
+    const location = useLocation();
     const { tabValue } = useParams();
+
     const tabRoutes: TabRoutes = {
         Planner: '/',
         Recipes: '/recipes',
         Analytics: '/analytics'
     }
 
+    const tabTitleMap: Record<string, keyof TabRoutes> = {
+        '/': 'Planner',
+        '/recipes': 'Recipes',
+        '/analytics': 'Analytics'
+    }
+
+    const currentPath: string = location.pathname;
+    const tabTitle: string = tabTitleMap[currentPath] || 'Planner'
+
     return (
-        <Container size="responsive">
-            <Title order={2}>Weekly Meal Planner</Title>
+        <Container size="responsive" py={10}>
+            <Flex justify='space-between'>
+                <PlannerTitle tabTitle={tabTitle} />
+                <ColorSchemeToggle />
+            </Flex>
             <Tabs
                 value={tabValue}
                 onChange={(value) => navigate(tabRoutes[value ? value as keyof TabRoutes : "Planner"])}
@@ -44,4 +59,4 @@ const Navbar = () => {
     )
 }
 
-export default Navbar;
+export { Navbar as default, type TabRoutes };
