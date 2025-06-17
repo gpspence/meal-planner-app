@@ -4,6 +4,7 @@ import MainLayout from './layouts/MainLayout';
 import NotFoundPage from './pages/NotFoundPage';
 import RecipesPage from './pages/RecipesPage';
 import AnalyticsPage from './pages/AnalyticsPage';
+import { recipesLoader, weekPlanLoader, dayAssignmentsLoader } from './loaders';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
