@@ -1,6 +1,8 @@
-import React from 'react'
+import { useLoaderData } from "react-router-dom";
 
 const RecipesPage = () => {
+  const recipes = useLoaderData();
+
   return (
     <div>RecipesPage</div>
   )
