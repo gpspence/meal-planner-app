@@ -5,11 +5,13 @@ import NotFoundPage from './pages/NotFoundPage';
 import RecipesPage from './pages/RecipesPage';
 import AnalyticsPage from './pages/AnalyticsPage';
 import { recipesLoader, weekPlanLoader, dayAssignmentsLoader } from './loaders';
+import CalendarPage from './pages/CalendarPage';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path='/' element={<MainLayout />}>
       <Route index element={<HomePage />} />
+      <Route path='/calendar' element={<CalendarPage />} />
       <Route path='/recipes' element={<RecipesPage />} loader={recipesLoader}/>
       <Route path='/analytics' element={<AnalyticsPage />}/>
       <Route path='*' element={<NotFoundPage />}/>

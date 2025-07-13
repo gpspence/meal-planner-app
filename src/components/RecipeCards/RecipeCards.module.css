@@ -1,0 +1,21 @@
+.root {
+    background-color: #f1f5f8;
+    border-top-left-radius: 16px;
+    padding: 10px;
+    margin-top: 10px;
+    height: 100%;
+}
+
+.flexRow {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.foreground {
+    background-color: white;
+    border-radius: 16px;
+    padding: 20px;
+    margin: 20px 40px;
+    height: 100%;
+}

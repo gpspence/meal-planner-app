@@ -1,0 +1,42 @@
+.root {
+    padding: 15px 25px;
+    gap: 16px
+}
+
+.flexColumn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.icons {
+    color: #262a2d;
+    font-size: 1.7rem;
+}
+
+.borderedIcons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border-radius: 10px;
+    border: 1px solid #dbdde1;
+    padding: 10px 10px 5px 10px;
+    margin: 0px;
+}
+
+.iconLabels {
+    font-size: 12px;
+    color: #262a2d;
+}
+
+.iconHighlight {
+    background-color: #e8eef3;
+    padding: 5px 5px 0px 5px;
+    border-radius: 10px;
+}
+
+.divider {
+    border: 0.5px solid #dbdde1;
+    width: 50%;
+}
