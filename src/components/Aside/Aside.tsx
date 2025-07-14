@@ -12,6 +12,13 @@ import {
 
 import classes from './Aside.module.css';
 
+const navItems = [
+    { to: '/', label: 'Home', icon: <PiHouseLineThin /> },
+    { to: '/recipes', label: 'Recipes', icon: <PiScrollThin /> },
+    { to: '/calendar', label: 'Plan', icon: <PiCalendarDotsThin /> },
+    { to: '/analytics', label: 'Analytics', icon: <PiGraphThin /> },
+]
+
 const Aside = () => {
 
     return (
