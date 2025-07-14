@@ -1,4 +1,4 @@
-import { Button, Divider, Text } from '@mantine/core';
+import { Text } from '@mantine/core';
 import { NavLink } from 'react-router-dom';
 import { IconContext } from 'react-icons';
 import {
@@ -10,7 +10,6 @@ import {
     PiGearThin
 } from "react-icons/pi";
 
-import ColorSchemeToggle from '../ColorSchemeToggle/ColorSchemeToggle';
 import classes from './Aside.module.css';
 
 const Aside = () => {
