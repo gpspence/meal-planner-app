@@ -1,19 +1,42 @@
 import { Title, Container, Tabs, Text, Flex, Button, Menu, Divider } from '@mantine/core';
+import { useContext } from 'react';
+import { Link, NavigateFunction, useNavigate } from 'react-router-dom';
+import { SessionContext } from '@/App';
+import { useSession } from '@/hooks/useSession';
 import PlannerTitle from '../PlannerTitle/PlannerTitle';
+import classes from './Navbar.module.css';
+import { supabase } from '@/supabaseClient';
+
 
 const Navbar = () => {
+
+    const { session, supabase } = useSession();
+    const navigate: NavigateFunction = useNavigate()
+
+    const handleLogout = async () => {
+        await supabase.auth.signOut();
+        navigate('/login');
+    }
 
     return (
         <Flex justify='space-between' align='center' p={5}>
             <PlannerTitle tabTitle='Planner' />
-            <Flex gap='xs'>
-                <Button bg="none">
-                    <Text c='black' fz='14'>Sign in</Text>
+            {session ? (
+                <Button className={classes.button} onClick={handleLogout}>
+                    Logout
                 </Button>
-                <Button bd='2px solid' radius='md'>
-                    <Text c='black' fz='14'>Sign up</Text>
-                </Button>
-            </Flex>
+            ) : (
+                <Flex gap='xs'>
+                    <Link to='/login?view=sign-in'>
+                        <Button bg="none">
+                            <Text c='black' fz='14'>Sign in</Text>
+                        </Button>
+                    </Link>
+                    <Link to='/login?view=sign-up'>
+                        <Button className={classes.button}>Sign up</Button>
+                    </Link>
+                </Flex>
+            )}
         </Flex>
     )
 }

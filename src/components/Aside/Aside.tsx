@@ -12,8 +12,7 @@ import {
 
 import classes from './Aside.module.css';
 
-const navItems = [
-    { to: '/', label: 'Home', icon: <PiHouseLineThin /> },
+const topNavItems = [
     { to: '/recipes', label: 'Recipes', icon: <PiScrollThin /> },
     { to: '/calendar', label: 'Plan', icon: <PiCalendarDotsThin /> },
     { to: '/analytics', label: 'Analytics', icon: <PiGraphThin /> },
@@ -22,51 +21,45 @@ const navItems = [
 const Aside = () => {
 
     return (
-        <>
-            <div className={`${classes.root} ${classes.flexColumn}`}>
-                <IconContext.Provider value={{ className: classes.icons }}>
-                    <div className={classes.borderedIcons}>
-                        <div>
-                            <PiUserCirclePlusThin />
-                        </div>
-                    </div>
-                    <div className={classes.flexColumn}>
-                        <div className={classes.iconHighlight}>
-                            <NavLink to='/'>
-                                <PiHouseLineThin />
-                            </NavLink>
-                        </div>
-                        <Text className={classes.iconLabels}>Home</Text>
-                    </div>
-                    <hr className={classes.divider} />
-                    <div className={classes.flexColumn}>
-                        <NavLink to='/recipes'>
-                            <PiScrollThin />
-                        </NavLink>
-                        <Text className={classes.iconLabels}>Recipes</Text>
-                    </div>
-                    <div className={classes.flexColumn}>
-                        <NavLink to='/calendar'>
-                            <PiCalendarDotsThin />
-                        </NavLink>
-                        <Text className={classes.iconLabels}>Plan</Text>
-                    </div>
-                    <div className={classes.flexColumn}>
-                        <NavLink to='/analytics'>
-                            <PiGraphThin />
-                        </NavLink>
-                        <Text className={classes.iconLabels}>Analytics</Text>
-                    </div>
-                    <hr className={classes.divider} />
+        <div className={`${classes.root} ${classes.flexColumn}`}>
+            <IconContext.Provider value={{ className: classes.icons }}>
+                <div className={classes.borderedIcons}>
                     <div>
-                        <div className={classes.flexColumn}>
-                            <PiGearThin />
-                            <Text className={classes.iconLabels}>Settings</Text>
-                        </div>
+                        <PiUserCirclePlusThin />
                     </div>
-                </IconContext.Provider>
-            </div>
-        </>
+                </div>
+
+                {/* Home icon */}
+                <div className={classes.flexColumn}>
+                    <NavLink to='/' className={classes.iconHighlight}>
+                        <PiHouseLineThin />
+                    </NavLink>
+                    <Text className={classes.iconLabels}>Home</Text>
+                </div>
+
+                <hr className={classes.divider} />
+
+                {/* Top bordered icons */}
+                {topNavItems.map(({ to, label, icon }) => (
+                    <div className={classes.flexColumn} key={label}>
+                        <NavLink to={to}>
+                            {icon}
+                        </NavLink>
+                        <Text className={classes.iconLabels}>{label}</Text>
+                    </div>
+                ))}
+
+                <hr className={classes.divider} />
+                
+                {/* Bottom bordered icons */}
+                <div>
+                    <div className={classes.flexColumn}>
+                        <PiGearThin />
+                        <Text className={classes.iconLabels}>Settings</Text>
+                    </div>
+                </div>
+            </IconContext.Provider>
+        </div>
     )
 }
 
