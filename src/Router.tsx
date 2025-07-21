@@ -4,7 +4,7 @@ import MainLayout from './layouts/MainLayout';
 import NotFoundPage from './pages/NotFoundPage';
 import RecipesPage from './pages/RecipesPage/RecipesPage';
 import AnalyticsPage from './pages/AnalyticsPage';
-import { recipesLoader, weekPlanLoader, dayAssignmentsLoader } from './loaders';
+import { loadRecipes } from '@/api/recipes';
 import CalendarPage from './pages/CalendarPage';
 import LoginPage from './pages/LoginPage/LoginPage';
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
@@ -20,7 +20,7 @@ const router = createBrowserRouter(
         <Route path='/' element={<MainLayout />}>
           <Route index element={<HomePage />} />
           <Route path='/calendar' element={<CalendarPage />} />
-          <Route path='/recipes' element={<RecipesPage />} loader={recipesLoader} />
+          <Route path='/recipes' element={<RecipesPage />} loader={loadRecipes} />
           <Route path='/analytics' element={<AnalyticsPage />} />
           <Route path='*' element={<NotFoundPage />} />
         </Route>

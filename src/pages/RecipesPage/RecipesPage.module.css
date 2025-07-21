@@ -26,6 +26,23 @@
     margin: 100px 10px;
 }
 
-.title {
+.headerBox {
     margin: 0px 10px 10px 10px;
+}
+
+.recipeListHeader {
+    margin: 15px 5px 10px 5px;
+}
+
+.button {
+    background-color: #d7f4fe;
+    color: black;
+    padding: 0px 10px;
+    font-weight: 400;
+    border-radius: var(--mantine-radius-md);
+}
+
+.icons {
+    margin-right: 5px;
+    font-size: 1.5em;
 }

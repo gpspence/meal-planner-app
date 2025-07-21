@@ -6,6 +6,7 @@
 }
 
 .image {
+    margin-top: 3rem;
     width: 40%;
     max-width: 700px;
     min-width: 150px;

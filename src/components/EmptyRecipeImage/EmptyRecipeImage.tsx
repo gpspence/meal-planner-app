@@ -8,13 +8,12 @@ const EmptyRecipeImage = () => {
         <div className={classes.root}>
             <Image
                 src={myImage}
-                alt='Empty Recipes List' 
+                alt='Empty Recipes List'
                 fit='contain'
                 className={classes.image}
             />
             <h2 className={classes.emptyTitle}>No recipes found</h2>
             <p className={classes.emptySubtext}>Start by adding meals to plan your week!</p>
-            <Button className={classes.ctaButton}>Add a recipe</Button>
         </div>
     )
 }
