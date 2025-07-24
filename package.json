@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "@mantine/core": "8.0.2",
+    "@mantine/form": "^8.2.1",
     "@mantine/hooks": "8.0.2",
     "@supabase/auth-ui-react": "^0.4.7",
     "@supabase/auth-ui-shared": "^0.1.8",
