@@ -1,9 +1,7 @@
-import React from 'react';
 import type { Tables } from "@/types/database.types";
-import { Card, Flex, Text } from "@mantine/core";
 import RecipeCard from '../RecipeCard/RecipeCard';
-import EmptyRecipeImage from '../EmptyRecipeImage/EmptyRecipeImage';
 import classes from './RecipeCards.module.css';
+import { Grid, Box } from "@mantine/core";
 
 type Recipe = Tables<"recipes">;
 type RecipeCardsProps = {
@@ -12,21 +10,18 @@ type RecipeCardsProps = {
 
 
 const RecipeCards = ({ recipes }: RecipeCardsProps) => {
-    const areRecipesLoaded: Boolean = (
-        recipes !== undefined &&
-        recipes.length !== 0
-    )
 
     return (
-        <div className={classes.cardsBox}>
-            {
-                areRecipesLoaded ?
-                    recipes.map((item: Recipe, idx: number) => (
-                        <RecipeCard key={idx} {...item} />
-                    )) :
-                    <EmptyRecipeImage />
-            }
-        </div>
+        <Grid
+            gutter='md'
+            justify='left'
+            p='md'
+            grow
+        >
+            {recipes.map((item: Recipe, idx: number) => (
+                <RecipeCard key={idx} {...item} />
+            ))}
+        </Grid>
     )
 }
 

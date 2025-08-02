@@ -26,7 +26,14 @@
 }
 
 .headerBox {
-    margin: 0px 10px 10px 10px;
+    margin: 0px 10px 20px 10px;
+}
+
+.dashBorder {
+    border: dashed 1px var(--mantine-color-gray-3); 
+    border-radius: 16px;
+    margin: 10px;
+    height: 100vh;
 }
 
 .recipeListHeader {

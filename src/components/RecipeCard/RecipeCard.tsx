@@ -1,40 +1,68 @@
 import React from 'react';
-import { Badge, Button, Card, Group, Image, Text } from '@mantine/core';
+import { ActionIcon, Badge, Box, Button, Card, Group, Image, Menu, Text } from '@mantine/core';
 import type { Tables } from "@/types/database.types";
+import { BsThreeDotsVertical } from 'react-icons/bs';
+import classes from "./RecipeCard.module.css";
+import choppingBoardImg from '../../img/chopping_board.avif';
+import { PiLink, PiPencil, PiPencilCircle, PiTrash } from 'react-icons/pi';
 
 type Recipe = Tables<"recipes">;
 
-const RecipeCard = ({image_url, title, description}: Recipe) => {
+const RecipeCard = ({ image_url, title }: Recipe) => {
+
+  const imageSource: string = image_url ? image_url : choppingBoardImg
 
   return (
     <Card
       padding="lg"
       radius="md"
+      m={3}
       withBorder
     >
-      <Card.Section>
-        {image_url && (
+      <Box className={classes.root}>
+        <Card.Section>
           <Image
-            src={image_url}
+            src={imageSource}
             height={180}
             alt={title}
           />
-        )}
-      </Card.Section>
+        </Card.Section>
 
-      <Group justify="space-between" mt="md" mb="xs">
-        <Text fw={500}>{title}</Text>
-        <Badge color="pink">Example</Badge>
-      </Group>
+        <Card.Section>
+          <Group p={5} m={0}>
+            <Badge color="pink">{"none"}</Badge>
+          </Group>
+        </Card.Section>
 
-      <Text size="sm" c="dimmed">
-        {description}
-      </Text>
+        <Card.Section>
+          <Group justify="space-between" m='xs' mt={0}>
 
-      <Button color="blue" fullWidth mt="md" radius="md">
-        Assign to calendar
-      </Button>
+            <Text fz={14} fw={500} maw={140}>{title}</Text>
+            <Menu withinPortal position='bottom-end' shadow='sm'>
+              <Menu.Target>
+                <ActionIcon variant='subtle' color='gray'>
+                  <BsThreeDotsVertical size={16} />
+                </ActionIcon>
+              </Menu.Target>
 
+              <Menu.Dropdown>
+                <Menu.Item leftSection={<PiLink />}>
+                  Assign to calendar
+                </Menu.Item>
+                <Menu.Item leftSection={<PiPencil />}>
+                  Edit recipe
+                </Menu.Item>
+                <Menu.Item
+                  leftSection={<PiTrash size={14} />}
+                  color='red'
+                >
+                  Delete recipe
+                </Menu.Item>
+              </Menu.Dropdown>
+            </Menu>
+          </Group>
+        </Card.Section>
+      </Box>
     </Card>
   );
 }

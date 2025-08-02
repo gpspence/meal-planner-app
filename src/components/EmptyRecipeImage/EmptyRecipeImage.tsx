@@ -1,6 +1,6 @@
 import myImage from '../../img/empty_recipe_logo_colour.png';
 import { Image } from '@mantine/core';
-import classes from './EmptyRecipeImage.module.css';
+import classes from './EmptyRecipeImageStyles.module.css';
 
 const EmptyRecipeImage = () => {
     return (
@@ -9,7 +9,7 @@ const EmptyRecipeImage = () => {
                 src={myImage}
                 alt='Empty Recipes List'
                 fit='contain'
-                className={classes.image}
+                className={classes.imageNew}
             />
             <h2 className={classes.emptyTitle}>No recipes found</h2>
             <p className={classes.emptySubtext}>Start by adding meals to plan your week!</p>

@@ -10,6 +10,7 @@ import { supabase } from '@/supabaseClient';
 type AddRecipeModalProps = {
     opened: boolean
     close: () => void
+    onRecipeCreated: () => void;
 }
 
 const { data: cuisines } = await supabase
@@ -33,18 +34,7 @@ const commonCarbohydrates: string[] = [
     "None"
 ];
 
-const urlRegex: RegExp = new RegExp(
-    [
-        '(https:\\/\\/www\\.|http:\\/\\/www\\.|https:\\/\\/|http:\\/\\/)?',
-        '[a-zA-Z]{2,}(\\.[a-zA-Z]{2,})(\\.[a-zA-Z]{2,})?\\/[a-zA-Z0-9]{2,}',
-        '|((https:\\/\\/www\\.|http:\\/\\/www\\.|https:\\/\\/|http:\\/\\/)?',
-        '[a-zA-Z]{2,}(\\.[a-zA-Z]{2,})(\\.[a-zA-Z]{2,})?)',
-        '|(https:\\/\\/www\\.|http:\\/\\/www\\.|https:\\/\\/|http:\\/\\/)?',
-        '[a-zA-Z0-9]{2,}\\.[a-zA-Z0-9]{2,}\\.[a-zA-Z0-9]{2,}',
-        '(\\.[a-zA-Z0-9]{2,})?'
-    ].join(''),
-    'g'
-);
+const urlRegex: RegExp = /https?:\/\/(?:www\.)?[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,}(?:\/[\w\-\/\.\?\=\#\%\&]*)?/
 
 function matchIfExists(regex: RegExp, message: string) {
     return (value: string | null) => {
@@ -68,7 +58,11 @@ function sanitiseForInsert(values: RecipeFormValues): NewRecipe {
 }
 
 
-const AddRecipeModal = ({ opened, close }: AddRecipeModalProps) => {
+const AddRecipeModal = ({
+    opened,
+    close,
+    onRecipeCreated
+}: AddRecipeModalProps) => {
     const form = useForm<RecipeFormValues>({
         mode: 'uncontrolled',
         initialValues: {
@@ -109,10 +103,16 @@ const AddRecipeModal = ({ opened, close }: AddRecipeModalProps) => {
                         color: 'red',
                         message: `Failed to create recipe. ${error.message}`
                     })
-                }
+                };
+                onRecipeCreated();
                 form.reset();
                 form.setFieldValue('ingredients', []);  // Isn't being reset correctly (keeps empty object instead of null)
                 setSelectedCuisineIds([])
+                notifications.show({
+                    title: 'Recipe Created Successfully!',
+                    color: 'green',
+                    message: `Your recipe has been added to the database.`
+                })
                 close();
             })}
             >
