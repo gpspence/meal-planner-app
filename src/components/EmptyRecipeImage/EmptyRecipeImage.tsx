@@ -1,6 +1,5 @@
-import React from 'react';
 import myImage from '../../img/empty_recipe_logo_colour.png';
-import { Button, Image, Text } from '@mantine/core';
+import { Image } from '@mantine/core';
 import classes from './EmptyRecipeImage.module.css';
 
 const EmptyRecipeImage = () => {

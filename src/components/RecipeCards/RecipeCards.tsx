@@ -1,5 +1,5 @@
 import React from 'react';
-import type { Tables } from "@/database.types";
+import type { Tables } from "@/types/database.types";
 import { Card, Flex, Text } from "@mantine/core";
 import RecipeCard from '../RecipeCard/RecipeCard';
 import EmptyRecipeImage from '../EmptyRecipeImage/EmptyRecipeImage';
@@ -18,7 +18,7 @@ const RecipeCards = ({ recipes }: RecipeCardsProps) => {
     )
 
     return (
-        <div className={classes.flexRow}>
+        <div className={classes.cardsBox}>
             {
                 areRecipesLoaded ?
                     recipes.map((item: Recipe, idx: number) => (

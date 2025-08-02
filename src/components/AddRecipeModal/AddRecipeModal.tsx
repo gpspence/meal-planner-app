@@ -1,131 +1,211 @@
-import React from 'react'
-import { Modal, Textarea, TextInput, Group, NumberInput, Select, Button, Box, Stack, Title, Text, ActionIcon } from '@mantine/core';
-import { useForm } from '@mantine/form';
+import React, { useState } from 'react'
+import { Modal, Textarea, TextInput, Group, NumberInput, Select, Button, Box, Stack, Title, Text, ActionIcon, MultiSelect, Autocomplete } from '@mantine/core';
+import { hasLength, isInRange, isNotEmpty, matches, useForm, UseFormReturnType } from '@mantine/form';
+import { notifications } from '@mantine/notifications';
 import { createRecipe } from '@/api/recipes';
-import { PiTrash } from 'react-icons/pi';
-import { randomId } from '@mantine/hooks';
-import classes from './AddRecipeModal.module.css';
+import AddRecipeIngredients from '../AddRecipeIngredients/AddRecipeIngredients';
+import { RecipeFormValues, Recipe, NewRecipe } from '@/types/recipeForm';
+import { supabase } from '@/supabaseClient';
 
 type AddRecipeModalProps = {
     opened: boolean
     close: () => void
 }
 
-const unitOptions = [
-    'kg', 'g', 'tbsp', 'tsp', 'mL', 'L', 'bunch', 'thumbsize'
-].map(unit => ({ label: unit, value: unit}));
+const { data: cuisines } = await supabase
+    .from("cuisines")
+    .select("id, name");
+
+const cuisineOptions = cuisines?.map(cuisine => ({
+    label: cuisine.name,
+    value: cuisine.id
+}));
+
+const commonCarbohydrates: string[] = [
+    "Pasta",
+    "Rice",
+    "Potatoes",
+    "Noodles",
+    "Bread",
+    "Cous cous",
+    "Polenta",
+    "Pastry",
+    "None"
+];
+
+const urlRegex: RegExp = new RegExp(
+    [
+        '(https:\\/\\/www\\.|http:\\/\\/www\\.|https:\\/\\/|http:\\/\\/)?',
+        '[a-zA-Z]{2,}(\\.[a-zA-Z]{2,})(\\.[a-zA-Z]{2,})?\\/[a-zA-Z0-9]{2,}',
+        '|((https:\\/\\/www\\.|http:\\/\\/www\\.|https:\\/\\/|http:\\/\\/)?',
+        '[a-zA-Z]{2,}(\\.[a-zA-Z]{2,})(\\.[a-zA-Z]{2,})?)',
+        '|(https:\\/\\/www\\.|http:\\/\\/www\\.|https:\\/\\/|http:\\/\\/)?',
+        '[a-zA-Z0-9]{2,}\\.[a-zA-Z0-9]{2,}\\.[a-zA-Z0-9]{2,}',
+        '(\\.[a-zA-Z0-9]{2,})?'
+    ].join(''),
+    'g'
+);
+
+function matchIfExists(regex: RegExp, message: string) {
+    return (value: string | null) => {
+        if (!value || value.trim() === '') return null; // Don't validate empty fields
+        return regex.test(value) ? null : message;
+    };
+}
+
+function sanitiseForInsert(values: RecipeFormValues): NewRecipe {
+    return {
+        title: values.title,
+        description: values.description,
+        prep_time_minutes: values.prepTimeMinutes!,
+        servings: values.servings!,
+        ingredients: values.ingredients ?? [],
+        instructions: values.instructions,
+        common_carbohydrate: values.commonCarbohydrate,
+        image_url: values.imageUrl,
+        recipe_url: values.recipeUrl
+    }
+}
+
 
 const AddRecipeModal = ({ opened, close }: AddRecipeModalProps) => {
-    const form = useForm({
+    const form = useForm<RecipeFormValues>({
         mode: 'uncontrolled',
         initialValues: {
             title: '',
             description: '',
-            ingredients: [
-                { name: '', quantity: 0, unit: '', note: '' }
-            ],
+            ingredients: [],
             instructions: '',
-            cuisine: '',
+            cuisine: [],
             commonCarbohydrate: '',
-            prepTimeMinutes: '',
+            prepTimeMinutes: 0,
             servings: 1,
             imageUrl: '',
             recipeUrl: ''
         },
 
         validate: {
-
+            title: isNotEmpty('Title cannot be empty'),
+            description: isNotEmpty('Description cannot be empty'),
+            cuisine: hasLength({ min: 1 }, 'Cuisine cannot be empty'),
+            prepTimeMinutes: isInRange({ min: 1 }, 'Value must be greater than 0'),
+            servings: isInRange({ min: 1 }, 'Value must be greater than 0'),
+            imageUrl: matchIfExists(urlRegex, "Website address must be valid if entered"),
+            recipeUrl: matches(urlRegex, "Website address must be valid")
         }
     })
 
-    const ingredientFields = form.values.ingredients.map((_, index) => (
-        <Group key={index} mt={'xs'} wrap='nowrap'>
-            <TextInput
-                placeholder='e.g. flour'
-                key={form.key(`ingredients.${index}.name`)}
-                {...form.getInputProps(`ingredients.${index}.name`)}
-            />
-            <NumberInput
-                min={1}
-                key={form.key(`ingredients.${index}.quantity`)}
-                {...form.getInputProps(`ingredients.${index}.quantity`)}
-            />
-            <Select
-                placeholder='e.g. kg'
-                data={unitOptions}
-                key={form.key(`ingredients.${index}.unit`)}
-                {...form.getInputProps(`ingredients.${index}.unit`)}
-            />
-            <TextInput
-                placeholder='e.g. sifted'
-                key={form.key(`ingredients.${index}.note`)}
-                {...form.getInputProps(`ingredients.${index}.note`)}
-            />
-            <ActionIcon
-                color='red'
-                onClick={() => form.removeListItem('ingredients', index)}
-            >
-                <PiTrash size={16} />
-            </ActionIcon>
-        </Group>
-    ))
+    const [selectedCuisineIds, setSelectedCuisineIds] = useState<string[]>([]);
 
     return (
         <Modal size='xl' opened={opened} onClose={close} title="Add Recipe">
-            <TextInput
-                label='Title'
-                withAsterisk
-                placeholder='Title'
-                key={form.key('title')}
-                {...form.getInputProps('title')}
-            />
+            <form onSubmit={form.onSubmit(async (values) => {
+                try {
+                    const toInsert = sanitiseForInsert(values)
+                    await createRecipe(toInsert, selectedCuisineIds);
+                } catch (error: any) {
+                    notifications.show({
+                        title: 'Recipe Creation Failed.',
+                        color: 'red',
+                        message: `Failed to create recipe. ${error.message}`
+                    })
+                }
+                form.reset();
+                form.setFieldValue('ingredients', []);  // Isn't being reset correctly (keeps empty object instead of null)
+                setSelectedCuisineIds([])
+                close();
+            })}
+            >
+                <Stack>
+                    <TextInput
+                        label='Title'
+                        withAsterisk
+                        placeholder='Title'
+                        key={form.key('title')}
+                        {...form.getInputProps('title')}
+                    />
 
-            <Textarea
-                label='Description'
-                placeholder='Description'
-                key={form.key('description')}
-                {...form.getInputProps('description')}
-            />
-            
-            <Box maw={500} mt='sm' mx='auto'>
-                {ingredientFields.length > 0 ? (
-                    <Group mb='xs'>
-                        <Text fw={500} size='sm' className={classes.flex}>
-                            Name
-                        </Text>
-                        <Text fw={500} size='sm' className={classes.flex}>
-                            Quantity
-                        </Text>
-                        <Text fw={500} size='sm' className={classes.flex}>
-                            Unit
-                        </Text>
-                        <Text fw={500} size='sm' pr={90} className={classes.flex}>
-                            Note
-                        </Text>
-                    </Group>
-                ) : (
-                    <Text c='dimmed' ta='center'>
-                        No ingredients added...
-                    </Text>
-                )}
-            </Box>
-            {ingredientFields}
-            <Group justify='center' mt='md'>
-                <Button
-                    onClick={() =>
-                        form.insertListItem(
-                            'ingredients',
-                            { name: '', quantity: 1, unit: '', note: '', key: randomId()}
-                        )
-                    }
-                >
-                    Add ingredient
-                </Button>
-            </Group>
+                    <Textarea
+                        label='Description'
+                        placeholder='Description'
+                        key={form.key('description')}
+                        {...form.getInputProps('description')}
+                        withAsterisk
+                    />
 
+                    <TextInput
+                        label='Recipe URL'
+                        placeholder='Recipe URL'
+                        key={form.key('recipeUrl')}
+                        {...form.getInputProps('recipeUrl')}
+                        withAsterisk
+                    />
 
+                    <MultiSelect
+                        label='Cuisine'
+                        placeholder='Select country'
+                        key={form.key('cuisine')}
+                        {...form.getInputProps('cuisine')}
+                        data={cuisineOptions}
+                        value={selectedCuisineIds}
+                        onChange={(value) => {
+                            setSelectedCuisineIds(value);
+                            form.setFieldValue('cuisine', value);
+                        }}
+                        limit={5}
+                        searchable
+                        hidePickedOptions
+                        withAsterisk
+                    />
+
+                    <NumberInput
+                        label='Total Duration (mins)'
+                        placeholder='15'
+                        key={form.key('prepTimeMinutes')}
+                        {...form.getInputProps('prepTimeMinutes')}
+                        min={1}
+                        withAsterisk
+                    />
+
+                    <NumberInput
+                        label='Number of Servings'
+                        placeholder='1'
+                        key={form.key('servings')}
+                        {...form.getInputProps('servings')}
+                        min={1}
+                    />
+
+                    <AddRecipeIngredients
+                        form={form}
+                    />
+
+                    <Textarea
+                        label='Instructions'
+                        placeholder='Instructions'
+                        key={form.key('instructions')}
+                        {...form.getInputProps('instructions')}
+                    />
+
+                    <Autocomplete
+                        label='Commonly Paired Carbohydrate'
+                        placeholder='Carbohydrate'
+                        key={form.key('commonCarbohydrate')}
+                        data={commonCarbohydrates}
+                        {...form.getInputProps('commonCarbohydrate')}
+                    />
+
+                    <TextInput
+                        label='Image URL'
+                        placeholder='Image URL'
+                        key={form.key('imageUrl')}
+                        {...form.getInputProps('imageUrl')}
+                    />
+
+                    <Button type='submit'>Submit</Button>
+                </Stack>
+            </form>
         </Modal>
     )
 }
 
-export default AddRecipeModal
+export default AddRecipeModal;

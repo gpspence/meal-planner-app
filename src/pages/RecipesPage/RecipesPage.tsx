@@ -1,5 +1,5 @@
 import { useLoaderData } from "react-router-dom";
-import type { Tables } from "@/database.types";
+import type { Tables } from "@/types/database.types";
 import { Button } from "@mantine/core";
 import RecipeCards from "@/components/RecipeCards/RecipeCards";
 import classes from './RecipesPage.module.css';

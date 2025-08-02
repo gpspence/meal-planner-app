@@ -1,10 +1,13 @@
 import { supabase } from '../supabaseClient';
 import type { LoaderFunctionArgs } from 'react-router-dom';
-import { Database } from '@/database.types';
+import { Database } from '@/types/database.types';
+import { NewRecipe, Recipe } from '@/types/recipeForm';
 
 
-type RecipeInsert = Database["public"]["Tables"]["recipes"]["Insert"]
-
+type RecipeLink = {
+    recipe_id: string;
+    cuisine_id: string;
+}
 
 export async function loadRecipes() {
     const { data, error } = await supabase
@@ -23,19 +26,52 @@ export async function loadRecipes() {
     return data;
 }
 
-export async function createRecipe(recipe: RecipeInsert): Promise<RecipeInsert> {
-    const { data, error } = await supabase
+export async function createRecipe(recipe: NewRecipe, cuisineIds: string[]): Promise<Recipe | undefined> {
+    const session = await supabase.auth.getSession();
+    const user = session.data.session?.user;
+
+    // Create the new recipe
+    let recipeWithUser: NewRecipe
+    if (user) {
+        recipeWithUser = {
+            ...recipe,
+            added_by: user.id
+        };
+    } else {
+        throw new Error("You must be logged in to add a recipe!")
+    }
+
+    console.log("New recipe", recipeWithUser)
+
+    const { data: createdRecipe, error: recipeError } = await supabase
         .from("recipes")
-        .insert(recipe)
+        .insert<NewRecipe>(recipeWithUser)
         .select()
         .single();
 
-    if (error) {
-        throw new Response("Failed to add recipe", {
-            status: 400,
-            statusText: error.message
-        });
+    if (recipeError) {
+        console.error("Supabase recipe insert error:", recipeError);
     }
 
-    return data
+    if (!createdRecipe) {
+        throw new Error("POST request failed.")
+    }
+
+    // Insert the links to cuisines
+    if (cuisineIds.length > 0) {
+        const links: RecipeLink[] = cuisineIds.map((cuisine_id) => ({
+            recipe_id: createdRecipe.id,
+            cuisine_id
+        }))
+
+        const { error: linkError } = await supabase
+            .from("recipe_cuisines")
+            .insert(links);
+
+        if (linkError) {
+            throw new Error("Failed to link recipe to cuisines")
+        }
+    }
+
+    return createdRecipe
 }
