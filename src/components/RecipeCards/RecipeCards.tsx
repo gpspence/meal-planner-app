@@ -15,7 +15,7 @@ const RecipeCards = ({ recipes }: RecipeCardsProps) => {
         <Grid
             gutter='md'
             justify='left'
-            p='md'
+            p='xs'
             grow
         >
             {recipes.map((item: Recipe, idx: number) => (
