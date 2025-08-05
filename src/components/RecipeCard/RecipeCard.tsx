@@ -11,6 +11,10 @@ type Recipe = Tables<"recipes">;
 const RecipeCard = ({ image_url, title }: Recipe) => {
 
   const imageSource: string = image_url ? image_url : choppingBoardImg
+  const TITLE_LENGTH: number = 30
+  const displayTitle: string = title.length < TITLE_LENGTH ?
+   title :
+   title.slice(0, TITLE_LENGTH) + "..."
 
   return (
     <Card
@@ -35,9 +39,9 @@ const RecipeCard = ({ image_url, title }: Recipe) => {
         </Card.Section>
 
         <Card.Section>
-          <Group justify="space-between" m='xs' mt={0}>
+          <Group justify="space-between" ml={10}>
 
-            <Text fz={14} fw={500} maw={140}>{title}</Text>
+            <Text fz={14} fw={500} maw={130}>{displayTitle}</Text>
             <Menu withinPortal position='bottom-end' shadow='sm'>
               <Menu.Target>
                 <ActionIcon variant='subtle' color='gray'>
