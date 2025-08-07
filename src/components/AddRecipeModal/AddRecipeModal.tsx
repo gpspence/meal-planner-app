@@ -1,10 +1,12 @@
-import React, { useState } from 'react'
-import { Modal, Textarea, TextInput, Group, NumberInput, Select, Button, Box, Stack, Title, Text, ActionIcon, MultiSelect, Autocomplete } from '@mantine/core';
+import { useState } from 'react';
+import { Modal, Textarea, TextInput, NumberInput, Button, Stack, MultiSelect, Autocomplete } from '@mantine/core';
 import { hasLength, isInRange, isNotEmpty, matches, useForm, UseFormReturnType } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
 import { createRecipe } from '@/api/recipes';
 import AddRecipeIngredients from '../AddRecipeIngredients/AddRecipeIngredients';
-import { RecipeFormValues, Recipe, NewRecipe } from '@/types/recipeForm';
+import { RecipeFormValues } from '@/types/recipeForm';
+import { sanitiseForInsert } from './sanitiseForInsert';
+import { matchIfExists, urlRegex } from './validation';
 import { supabase } from '@/supabaseClient';
 
 type AddRecipeModalProps = {
@@ -33,29 +35,6 @@ const commonCarbohydrates: string[] = [
     "Pastry",
     "None"
 ];
-
-const urlRegex: RegExp = /https?:\/\/(?:www\.)?[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,}(?:\/[\w\-\/\.\?\=\#\%\&]*)?/
-
-function matchIfExists(regex: RegExp, message: string) {
-    return (value: string | null) => {
-        if (!value || value.trim() === '') return null; // Don't validate empty fields
-        return regex.test(value) ? null : message;
-    };
-}
-
-function sanitiseForInsert(values: RecipeFormValues): NewRecipe {
-    return {
-        title: values.title,
-        description: values.description,
-        prep_time_minutes: values.prepTimeMinutes!,
-        servings: values.servings!,
-        ingredients: values.ingredients ?? [],
-        instructions: values.instructions,
-        common_carbohydrate: values.commonCarbohydrate,
-        image_url: values.imageUrl,
-        recipe_url: values.recipeUrl
-    }
-}
 
 
 const AddRecipeModal = ({
