@@ -2,10 +2,11 @@ import React from 'react';
 import { Auth } from '@supabase/auth-ui-react';
 import { useSession } from '@/hooks/useSession';
 import { ThemeSupa, ViewType } from '@supabase/auth-ui-shared';
-import { Card, Text, Title } from '@mantine/core';
+import { BackgroundImage, Card, Text, Title } from '@mantine/core';
 import { Navigate, useSearchParams } from 'react-router-dom';
 import classes from './LoginPage.module.css';
 import { Container } from '@mantine/core';
+import backgroundImage from '../../img/background2.jpg';
 
 const allowedViews: ViewType[] = [
   'sign_in',
@@ -26,29 +27,34 @@ const LoginPage = () => {
     return <Navigate to="/" replace />;
   }
   return (
-    <Container className={classes.authContainer}>
-      <Card shadow='xs'>
-        <Title fz={24}>
-          Sign In
-        </Title>
-        <Auth
-          supabaseClient={supabase}
-          appearance={{
-            theme: ThemeSupa,
-            variables: {
-              default: {
-                colors: {
-                  brand: '#2563eb',
-                  brandAccent: 'darkblue',
+    <BackgroundImage
+      src={backgroundImage}
+      h='100vh'
+    >
+      <Container className={classes.authContainer}>
+        <Card shadow=''>
+          <Title fz={24}>
+            Sign In
+          </Title>
+          <Auth
+            supabaseClient={supabase}
+            appearance={{
+              theme: ThemeSupa,
+              variables: {
+                default: {
+                  colors: {
+                    brand: '#2563eb',
+                    brandAccent: 'darkblue',
+                  },
                 },
               },
-            },
-          }}
-          view={view}
-          providers={['google', 'github']}
-        />
-      </Card>
-    </Container>
+            }}
+            view={view}
+            providers={['google', 'github']}
+          />
+        </Card>
+      </Container >
+    </BackgroundImage>
   )
 }
 
