@@ -9,10 +9,10 @@ import type { SessionContextType } from './types/session';
 
 
 // Create a dynamic context with session data to use across the app
-export const SessionContext = createContext<SessionContextType | null>({ session: null, supabase })
+export const SessionContext = createContext<SessionContextType>({ session: null, supabase })
 
 export default function App() {
-  const [session, setSession] = useState<Session | null>(null);
+  const [session, setSession] = useState<Session | null | undefined>(undefined);
 
   // Track auth state
   useEffect(() => {

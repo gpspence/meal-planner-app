@@ -38,6 +38,7 @@ const LoginPage = () => {
           </Title>
           <Auth
             supabaseClient={supabase}
+            redirectTo={window.location.origin + '/'}
             appearance={{
               theme: ThemeSupa,
               variables: {
