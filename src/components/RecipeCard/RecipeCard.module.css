@@ -2,3 +2,12 @@
     height: 225px;
     width: 150px;
 }
+
+.clickableCard {
+    cursor: pointer;
+    transition: transform 0.1s ease;
+}
+
+.clickableCard:hover {
+    transform: scale(1.01);
+}

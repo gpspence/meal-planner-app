@@ -7,13 +7,16 @@ import { PiPlusCircle } from "react-icons/pi";
 import { useDisclosure } from "@mantine/hooks";
 import { loadRecipes } from "@/api/recipes";
 import AddRecipeModal from "@/components/AddRecipeModal/AddRecipeModal";
+import RecipeOverlay from "@/components/RecipeOverlay/RecipeOverlay";
 import EmptyRecipeImage from "@/components/EmptyRecipeImage/EmptyRecipeImage";
 
 type Recipe = Tables<"recipes">;
 
 const RecipesPage = () => {
   const [recipes, setRecipes] = useState<Recipe[]>([]);
-  const [opened, { open, close }] = useDisclosure(false);
+  const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null)
+  const [modalOpened, { open: openModal, close: closeModal }] = useDisclosure(false);
+  const [overlayOpened, { open: openOverlay, close: closeOverlay }] = useDisclosure(false);
 
   // Get recipes and update component state
   const fetchRecipes = async () => {
@@ -34,23 +37,34 @@ const RecipesPage = () => {
   return (
     <>
       <AddRecipeModal
-        opened={opened}
-        close={close}
+        opened={modalOpened}
+        close={closeModal}
         onRecipeCreated={fetchRecipes}
+      />
+
+      <RecipeOverlay
+        opened={overlayOpened}
+        close={closeOverlay}
       />
 
       <div className={classes.background}>
         <div className={classes.foreground}>
           <div className={classes.headerBox}>
             <h3 className={classes.recipeListHeader}>All Recipes</h3>
-            <Button onClick={open} className={classes.button}>
+            <Button onClick={openModal} className={classes.button}>
               <PiPlusCircle className={classes.icons} />
               Add recipe
             </Button>
           </div>
           <div className={classes.dashBorder}>
             {areRecipesLoaded ?
-              <RecipeCards recipes={recipes} /> :
+              <RecipeCards
+                recipes={recipes}
+                onRecipeClick={(recipe) => {
+                  setSelectedRecipe(recipe);
+                  openOverlay();
+                }}
+              /> :
               <div className={`${classes.flex} ${classes.image}`}>
                 <EmptyRecipeImage />
               </div>

@@ -4,17 +4,20 @@ import type { Tables } from "@/types/database.types";
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import classes from "./RecipeCard.module.css";
 import choppingBoardImg from '../../img/chopping_board.avif';
-import { PiLink, PiPencil, PiPencilCircle, PiTrash } from 'react-icons/pi';
+import { PiLink, PiPencil, PiTrash } from 'react-icons/pi';
 
 type Recipe = Tables<"recipes">;
+interface RecipeCardProps extends Recipe {
+  onCardClick: () => void;
+}
 
-const RecipeCard = ({ image_url, title }: Recipe) => {
+const RecipeCard = ({ image_url, title, onCardClick }: RecipeCardProps) => {
 
-  const imageSource: string = image_url ? image_url : choppingBoardImg
-  const TITLE_LENGTH: number = 30
+  const imageSource: string = image_url ? image_url : choppingBoardImg;
+  const TITLE_LENGTH: number = 30;
   const displayTitle: string = title.length < TITLE_LENGTH ?
-   title :
-   title.slice(0, TITLE_LENGTH) + "..."
+    title :
+    title.slice(0, TITLE_LENGTH) + "...";
 
   return (
     <Card
@@ -22,6 +25,8 @@ const RecipeCard = ({ image_url, title }: Recipe) => {
       radius="md"
       m={3}
       withBorder
+      onClick={onCardClick}
+      className={classes.clickableCard}
     >
       <Box className={classes.root}>
         <Card.Section>

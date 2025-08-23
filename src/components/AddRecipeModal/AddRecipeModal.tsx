@@ -8,8 +8,8 @@ import RecipeDetails from './RecipeDetails';
 import RecipeLinks from './RecipeLinks';
 
 type AddRecipeModalProps = {
-    opened: boolean
-    close: () => void
+    opened: boolean;
+    close: () => void;
     onRecipeCreated: () => void;
 }
 
