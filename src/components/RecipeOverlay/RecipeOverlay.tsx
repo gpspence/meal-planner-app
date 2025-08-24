@@ -14,6 +14,8 @@ const RecipeOverlay = ({ opened, close }: RecipeOverlayProps) => {
             <Drawer
                 opened={opened}
                 onClose={close}
+                position='right'
+                size='60%'
                 title='Test'
             >
                 Some Content
