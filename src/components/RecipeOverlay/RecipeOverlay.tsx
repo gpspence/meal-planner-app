@@ -1,13 +1,25 @@
 import React from 'react'
-import { Drawer } from '@mantine/core';
+import { Drawer, List, Table } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
+import { Json, Tables } from '@/types/database.types';
+import { stringify } from 'postcss';
+import classes from './RecipeOverlay.module.css'
+import { Ingredient } from '@/types/recipeForm';
+import { useRecipeOverlay } from '@/hooks/useRecipeOverlay';
+
+type Recipe = Tables<"recipes">;
 
 type RecipeOverlayProps = {
     opened: boolean;
     close: () => void;
+    recipe: Recipe
 }
 
-const RecipeOverlay = ({ opened, close }: RecipeOverlayProps) => {
+
+
+const RecipeOverlay = ({ opened, close, recipe }: RecipeOverlayProps) => {
+
+    const { tableRows } = useRecipeOverlay(recipe);
 
     return (
         <>
@@ -16,9 +28,13 @@ const RecipeOverlay = ({ opened, close }: RecipeOverlayProps) => {
                 onClose={close}
                 position='right'
                 size='60%'
-                title='Test'
+                title={recipe.title}
             >
-                Some Content
+                <div className={classes.background}>
+                    <Table>
+                        <Table.Tbody>{tableRows}</Table.Tbody>
+                    </Table>
+                </div>
             </Drawer>
         </>
     )

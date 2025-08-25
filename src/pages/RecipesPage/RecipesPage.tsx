@@ -14,7 +14,7 @@ type Recipe = Tables<"recipes">;
 
 const RecipesPage = () => {
   const [recipes, setRecipes] = useState<Recipe[]>([]);
-  const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null)
+  const [selectedRecipe, setSelectedRecipe] = useState<Recipe | undefined>(undefined)
   const [modalOpened, { open: openModal, close: closeModal }] = useDisclosure(false);
   const [overlayOpened, { open: openOverlay, close: closeOverlay }] = useDisclosure(false);
 
@@ -42,10 +42,13 @@ const RecipesPage = () => {
         onRecipeCreated={fetchRecipes}
       />
 
-      <RecipeOverlay
+      {selectedRecipe ? (
+        <RecipeOverlay
         opened={overlayOpened}
         close={closeOverlay}
+        recipe={selectedRecipe}
       />
+    ) : null}
 
       <div className={classes.background}>
         <div className={classes.foreground}>
