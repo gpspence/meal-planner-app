@@ -14,7 +14,7 @@ interface RecipeCardProps extends Recipe {
 const RecipeCard = ({ image_url, title, onCardClick }: RecipeCardProps) => {
 
   const imageSource: string = image_url ? image_url : choppingBoardImg;
-  const TITLE_LENGTH: number = 30;
+  const TITLE_LENGTH: number = 40;
   const displayTitle: string = title.length < TITLE_LENGTH ?
     title :
     title.slice(0, TITLE_LENGTH) + "...";
@@ -46,29 +46,7 @@ const RecipeCard = ({ image_url, title, onCardClick }: RecipeCardProps) => {
         <Card.Section>
           <Group justify="space-between" ml={10}>
 
-            <Text fz={14} fw={500} maw={130}>{displayTitle}</Text>
-            <Menu withinPortal position='bottom-end' shadow='sm'>
-              <Menu.Target>
-                <ActionIcon variant='subtle' color='gray'>
-                  <BsThreeDotsVertical size={16} />
-                </ActionIcon>
-              </Menu.Target>
-
-              <Menu.Dropdown>
-                <Menu.Item leftSection={<PiLink />}>
-                  Assign to calendar
-                </Menu.Item>
-                <Menu.Item leftSection={<PiPencil />}>
-                  Edit recipe
-                </Menu.Item>
-                <Menu.Item
-                  leftSection={<PiTrash size={14} />}
-                  color='red'
-                >
-                  Delete recipe
-                </Menu.Item>
-              </Menu.Dropdown>
-            </Menu>
+            <Text fz={14} fw={500} maw={150}>{displayTitle}</Text>
           </Group>
         </Card.Section>
       </Box>

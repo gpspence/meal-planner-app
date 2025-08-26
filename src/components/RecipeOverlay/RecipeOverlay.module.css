@@ -4,3 +4,8 @@
     padding: 10px 10px 10px 10px;
     min-height: 90vh;
 }
+
+.safeButton {
+    background-color: #d7f4fe;
+    color: black;
+}
