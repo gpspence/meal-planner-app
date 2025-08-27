@@ -75,3 +75,20 @@ export async function createRecipe(recipe: NewRecipe, cuisineIds: string[]): Pro
 
     return createdRecipe
 }
+
+export async function deleteSingleRecipe(recipeId: string) {
+    const { data: deletedRecipe, error: deleteError } = await supabase
+        .from('recipes')
+        .delete()
+        .eq('id', recipeId)
+        .select()
+    if (deleteError) {
+        console.error("Supabase recipe delete error:", deleteError);
+    }
+
+    if (!deletedRecipe || deletedRecipe.length === 0) {
+        throw new Error("DELETE request failed.")
+    }
+
+    return deletedRecipe[0] ?? null
+}

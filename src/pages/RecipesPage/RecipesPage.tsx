@@ -47,6 +47,7 @@ const RecipesPage = () => {
         opened={overlayOpened}
         close={closeOverlay}
         recipe={selectedRecipe}
+        fetchRecipes={fetchRecipes}
       />
     ) : null}
 

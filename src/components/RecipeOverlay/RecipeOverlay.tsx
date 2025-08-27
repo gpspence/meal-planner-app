@@ -1,27 +1,29 @@
-import React from 'react'
-import { ActionIcon, Button, Drawer, Group, List, Menu, Table } from '@mantine/core';
-import { useDisclosure } from '@mantine/hooks';
-import { Json, Tables } from '@/types/database.types';
-import { stringify } from 'postcss';
+import { Button, Drawer, Group, Table } from '@mantine/core';
+import { Tables } from '@/types/database.types';
 import classes from './RecipeOverlay.module.css'
-import { Ingredient } from '@/types/recipeForm';
-import { useRecipeOverlay } from '@/hooks/useRecipeOverlay';
-import { BsThreeDotsVertical } from 'react-icons/bs';
 import { PiLink, PiPencil, PiTrash } from 'react-icons/pi';
+import { useRecipeOverlay } from '@/hooks/useRecipeOverlay';
+import { deleteSingleRecipe } from '@/api/recipes';
+import DeleteRecipeButton from '../DeleteRecipeButton/DeleteRecipeButton';
 
 type Recipe = Tables<"recipes">;
 
 type RecipeOverlayProps = {
     opened: boolean;
     close: () => void;
-    recipe: Recipe
+    recipe: Recipe;
+    fetchRecipes: () => void;
 }
 
 
 
-const RecipeOverlay = ({ opened, close, recipe }: RecipeOverlayProps) => {
+const RecipeOverlay = ({ opened, close, recipe, fetchRecipes }: RecipeOverlayProps) => {
 
     const { tableRows } = useRecipeOverlay(recipe);
+    const onSubmit = () => {
+        close();
+        fetchRecipes();
+    }
 
     return (
         <>
@@ -40,12 +42,10 @@ const RecipeOverlay = ({ opened, close, recipe }: RecipeOverlayProps) => {
                         <Button leftSection={<PiPencil />} className={classes.safeButton}>
                             Edit recipe
                         </Button>
-                        <Button
-                            leftSection={<PiTrash size={14} />}
-                            color='red'
-                        >
-                            Delete recipe
-                        </Button>
+                        <DeleteRecipeButton
+                        recipeId={recipe.id}
+                        onSubmit={onSubmit}
+                        />
                     </Group>
                 </Drawer.Header>
                 <div className={classes.background}>
