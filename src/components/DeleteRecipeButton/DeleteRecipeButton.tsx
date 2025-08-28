@@ -1,6 +1,7 @@
 import { deleteSingleRecipe } from '@/api/recipes';
 import { Button } from '@mantine/core'
 import { notifications } from '@mantine/notifications';
+import { modals } from '@mantine/modals';
 import React, { useState } from 'react'
 import { PiTrash } from 'react-icons/pi'
 
@@ -11,6 +12,8 @@ type DeleteRecipeButtonProps = {
 
 const DeleteRecipeButton = ({ recipeId, onSubmit }: DeleteRecipeButtonProps) => {
     const [loading, setLoading] = useState(false);
+
+    const openConfirmModal = () => modals.openConfirmModal({})
 
     const handleDelete = async () => {
         if (!confirm("Are you sure you want to delete this recipe?")) return;
