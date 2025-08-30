@@ -6,6 +6,7 @@ import { useState, useEffect, createContext } from 'react';
 import { Session, SupabaseClient } from '@supabase/supabase-js';
 import { supabase } from './supabaseClient';
 import type { SessionContextType } from './types/session';
+import { ModalsProvider } from '@mantine/modals';
 
 
 // Create a dynamic context with session data to use across the app
@@ -31,9 +32,11 @@ export default function App() {
 
   return (
     <MantineProvider theme={theme}>
-      <SessionContext.Provider value={{ session, supabase }}>
-        <Router />
-      </SessionContext.Provider>
+      <ModalsProvider>
+        <SessionContext.Provider value={{ session, supabase }}>
+          <Router />
+        </SessionContext.Provider>
+      </ModalsProvider>
     </MantineProvider>
   );
 }

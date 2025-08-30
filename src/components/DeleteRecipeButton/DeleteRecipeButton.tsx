@@ -1,5 +1,5 @@
 import { deleteSingleRecipe } from '@/api/recipes';
-import { Button } from '@mantine/core'
+import { Button, Text } from '@mantine/core'
 import { notifications } from '@mantine/notifications';
 import { modals } from '@mantine/modals';
 import React, { useState } from 'react'
@@ -11,44 +11,49 @@ type DeleteRecipeButtonProps = {
 }
 
 const DeleteRecipeButton = ({ recipeId, onSubmit }: DeleteRecipeButtonProps) => {
-    const [loading, setLoading] = useState(false);
 
-    const openConfirmModal = () => modals.openConfirmModal({})
+    const openConfirm = () =>
+        modals.openConfirmModal({
+            title: 'Delete recipe',
+            centered: true,
+            children: (
+                <Text size='sm'>
+                    Are you sure you want to delete this recipe? This action is destructive and cannot be reversed.
+                </Text>
+            ),
+            labels: { confirm: 'Confirm', cancel: 'Cancel' },
+            confirmProps: { color: 'red' },
+            onConfirm: async () => {
+                try {
+                    await deleteSingleRecipe(recipeId);
+                    notifications.show({
+                        title: 'Recipe Deleted Successfully!',
+                        color: 'green',
+                        message: `Your recipe has been deleted from the database.`
+                    });
+                } catch (error) {
+                    console.error(error);
+                    notifications.show({
+                        title: 'Recipe Deletion Failed.',
+                        color: 'red',
+                        message: `Failed to delete recipe. ${error}`
+                    })
+                } finally {
+                    onSubmit();
+                }
+            }
+        });
 
-    const handleDelete = async () => {
-        if (!confirm("Are you sure you want to delete this recipe?")) return;
-        
-        setLoading(true);
-        try {
-            await deleteSingleRecipe(recipeId);
-            notifications.show({
-                title: 'Recipe Deleted Successfully!',
-                color: 'green',
-                message: `Your recipe has been deleted from the database.`
-            });
-        } catch (error) {
-            console.error(error);
-            notifications.show({
-                title: 'Recipe Deletion Failed.',
-                color: 'red',
-                message: `Failed to delete recipe. ${error}`
-            })
-        } finally {
-            setLoading(false);
-            onSubmit();
-        }
-    };
 
     return (
         <Button
             leftSection={<PiTrash size={14} />}
             color='red'
-            onClick={handleDelete}
-            loading={loading}
+            onClick={openConfirm}
         >
             Delete recipe
         </Button>
-    )
+    );
 }
 
 export default DeleteRecipeButton

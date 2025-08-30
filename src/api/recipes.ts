@@ -82,13 +82,59 @@ export async function deleteSingleRecipe(recipeId: string) {
         .delete()
         .eq('id', recipeId)
         .select()
+        .single()
     if (deleteError) {
         console.error("Supabase recipe delete error:", deleteError);
     }
 
-    if (!deletedRecipe || deletedRecipe.length === 0) {
+    if (!deletedRecipe) {
         throw new Error("DELETE request failed.")
     }
 
-    return deletedRecipe[0] ?? null
+    return deletedRecipe
+}
+
+export async function updateRecipe(recipe: NewRecipe, id: string, cuisineIds: string[]) {
+    const { data: updatedRecipe, error: recipeError } = await supabase
+        .from("recipes")
+        .update<NewRecipe>(recipe)
+        .eq('id', id)
+        .select()
+        .single();
+
+    if (recipeError) {
+        console.error("Supabase recipe update error:", recipeError);
+    }
+
+    if (!updatedRecipe) {
+        throw new Error("PUT request failed.")
+    }
+
+    // Clean existing cuisine links for this recipe
+    const { error: deleteError } = await supabase
+    .from('recipe_cuisines')
+    .delete()
+    .eq('recipe_id', updatedRecipe.id)
+
+    if (deleteError) {
+        throw new Error("Failed to clear old recipe_cuisine links.")
+    }
+
+    // Insert new links
+    if (cuisineIds.length > 0) {
+        const links: RecipeLink[] = cuisineIds.map((cuisine_id) => ({
+            recipe_id: updatedRecipe.id,
+            cuisine_id
+        }))
+
+        const { error: linkError } = await supabase
+            .from("recipe_cuisines")
+            .insert(links);
+
+        if (linkError) {
+            throw new Error("Failed to link recipe to cuisines")
+        }
+    }
+
+    return updatedRecipe
 }
