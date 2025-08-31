@@ -1,6 +1,5 @@
 import { Outlet } from 'react-router-dom';
 import Navbar from '../components/Navbar/Navbar'
-import { useDisclosure } from '@mantine/hooks';
 import Aside from '@/components/Aside/Aside';
 import classes from './MainLayout.module.css'
 import { Notifications } from '@mantine/notifications';

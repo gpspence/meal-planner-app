@@ -12,8 +12,9 @@ const RecipeCard = ({ image_url, title, recipe_cuisines, onCardClick }: RecipeCa
 
   const imageSource: string = image_url ? image_url : choppingBoardImg;
   const TITLE_LENGTH: number = 40;
+  const shortenedTitle: string = title.slice(0, TITLE_LENGTH) + "...";
   const displayTitle: string = title.length < TITLE_LENGTH ?
-    title : (title.slice(0, TITLE_LENGTH) + "...");
+    title : shortenedTitle;
   const cuisineNames: string[] = recipe_cuisines.map(rc => rc.cuisines.name)
 
   return (
