@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Modal, Textarea, TextInput, Button, Stack } from '@mantine/core';
+import { Modal, Button, Stack } from '@mantine/core';
 import AddRecipeIngredients from '../AddRecipeIngredients/AddRecipeIngredients';
 import { useRecipeForm } from '@/hooks/useRecipeForm';
 import { supabase } from '@/supabaseClient';
@@ -29,7 +29,8 @@ const AddRecipeModal = ({ opened, close, onRecipeCreated }: AddRecipeModalProps)
     }, []);
 
     // Get form functions from useRecipeForm hook
-    const { form, selectedCuisineIds, setSelectedCuisineIds, handleSubmit } = useRecipeForm(onRecipeCreated, close);
+    const { form, selectedCuisineIds, setSelectedCuisineIds, handleSubmit } =
+        useRecipeForm(onRecipeCreated, close, 'create');
 
     return (
         <Modal size='xl' opened={opened} onClose={close} title="Add Recipe">

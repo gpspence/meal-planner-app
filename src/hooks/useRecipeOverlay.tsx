@@ -1,5 +1,5 @@
 import { Json } from "@/types/database.types";
-import { Ingredient, Recipe } from "@/types/recipeForm";
+import { Ingredient, RecipeInsert } from "@/types/recipeForm";
 import { Table } from "@mantine/core";
 
 
@@ -68,7 +68,7 @@ function cleanProps(key: string, value: string | Json) {
 }
 
 
-export function useRecipeOverlay(recipe: Recipe) {
+export function useRecipeOverlay(recipe: RecipeInsert) {
     const tableRows = Object.entries(recipe).map(([key, value]) => (
         checkRow(key, value) ? (
             <Table.Tr key={key}>

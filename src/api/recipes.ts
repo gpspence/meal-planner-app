@@ -1,7 +1,7 @@
 import { supabase } from '../supabaseClient';
 import type { LoaderFunctionArgs } from 'react-router-dom';
 import { Database } from '@/types/database.types';
-import { NewRecipe, Recipe } from '@/types/recipeForm';
+import { NewRecipe, RecipeInsert, RecipeWithCuisines } from '@/types/recipe';
 
 
 type RecipeLink = {
@@ -12,21 +12,20 @@ type RecipeLink = {
 export async function loadRecipes() {
     const { data, error } = await supabase
         .from("recipes")
-        .select("*")
+        .select(`
+            *,
+            recipe_cuisines (
+            cuisine_id,
+            cuisines ( id, name )
+            )
+        `)
         .order("title", { ascending: true });
 
-    if (error) {
-        // Throw a response for react router
-        throw new Response("Failed to load recipes", {
-            status: 500,
-            statusText: error.message
-        });
-    }
-
-    return data;
+    if (error) throw error;
+    return data as RecipeWithCuisines[];
 }
 
-export async function createRecipe(recipe: NewRecipe, cuisineIds: string[]): Promise<Recipe | undefined> {
+export async function createRecipe(recipe: NewRecipe, cuisineIds: string[]): Promise<RecipeInsert | undefined> {
     const session = await supabase.auth.getSession();
     const user = session.data.session?.user;
 
@@ -112,9 +111,9 @@ export async function updateRecipe(recipe: NewRecipe, id: string, cuisineIds: st
 
     // Clean existing cuisine links for this recipe
     const { error: deleteError } = await supabase
-    .from('recipe_cuisines')
-    .delete()
-    .eq('recipe_id', updatedRecipe.id)
+        .from('recipe_cuisines')
+        .delete()
+        .eq('recipe_id', updatedRecipe.id)
 
     if (deleteError) {
         throw new Error("Failed to clear old recipe_cuisine links.")

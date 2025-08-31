@@ -3,26 +3,30 @@ import { Tables } from '@/types/database.types';
 import classes from './RecipeOverlay.module.css'
 import { PiLink, PiPencil, PiTrash } from 'react-icons/pi';
 import { useRecipeOverlay } from '@/hooks/useRecipeOverlay';
-import { deleteSingleRecipe } from '@/api/recipes';
 import DeleteRecipeButton from '../DeleteRecipeButton/DeleteRecipeButton';
+import { Recipe, RecipeWithCuisines } from '@/types/recipe';
 
-type Recipe = Tables<"recipes">;
 
 type RecipeOverlayProps = {
     opened: boolean;
     close: () => void;
-    recipe: Recipe;
+    recipe: RecipeWithCuisines;
+    openEditModal: () => void;
     fetchRecipes: () => void;
 }
 
 
 
-const RecipeOverlay = ({ opened, close, recipe, fetchRecipes }: RecipeOverlayProps) => {
+const RecipeOverlay = ({ opened, close, recipe, openEditModal, fetchRecipes }: RecipeOverlayProps) => {
 
     const { tableRows } = useRecipeOverlay(recipe);
     const onSubmit = () => {
         close();
         fetchRecipes();
+    }
+    const handleOpenEditModal = () => {
+        close();
+        openEditModal();
     }
 
     return (
@@ -39,7 +43,11 @@ const RecipeOverlay = ({ opened, close, recipe, fetchRecipes }: RecipeOverlayPro
                         <Button leftSection={<PiLink />} className={classes.safeButton}>
                             Assign to calendar
                         </Button>
-                        <Button leftSection={<PiPencil />} className={classes.safeButton}>
+                        <Button
+                        leftSection={<PiPencil />}
+                        className={classes.safeButton}
+                        onClick={handleOpenEditModal}
+                        >
                             Edit recipe
                         </Button>
                         <DeleteRecipeButton

@@ -1,12 +1,17 @@
 import { useForm, hasLength, isInRange, isNotEmpty, matches } from '@mantine/form';
 import { urlRegex, matchIfExists } from '@/utils/validation';
 import { sanitiseForInsert } from '@/utils/sanitiseForRecipeInsert';
-import { RecipeFormValues } from '@/types/recipeForm';
 import { useState } from 'react';
-import { createRecipe } from '@/api/recipes';
+import { createRecipe, updateRecipe } from '@/api/recipes';
 import { notifications } from '@mantine/notifications';
+import { RecipeFormValues } from '@/types/recipe';
 
-export function useRecipeForm(onRecipeCreated: () => void, close: () => void) {
+export function useRecipeForm(
+    onSuccess: () => void,
+    close: () => void,
+    mode: 'create' | 'edit' = 'create',
+    recipeId?: string
+) {
     const [selectedCuisineIds, setSelectedCuisineIds] = useState<string[]>([]);
 
     const form = useForm<RecipeFormValues>({
@@ -36,23 +41,33 @@ export function useRecipeForm(onRecipeCreated: () => void, close: () => void) {
 
     async function handleSubmit(values: RecipeFormValues) {
         try {
-            const toInsert = sanitiseForInsert(values)
-            await createRecipe(toInsert, selectedCuisineIds);
-            notifications.show({
-                title: 'Recipe Created Successfully!',
-                color: 'green',
-                message: `Your recipe has been added to the database.`
-            });
-            onRecipeCreated();
+            const payload = sanitiseForInsert(values)
+            if (mode === 'create') {
+                await createRecipe(payload, selectedCuisineIds);
+                notifications.show({
+                    title: 'Recipe created successfully!',
+                    color: 'green',
+                    message: `Your recipe has been added to the database.`
+                });
+            } else if (mode === 'edit' && recipeId) {
+                await updateRecipe(payload, recipeId, selectedCuisineIds);
+                notifications.show({
+                    title: 'Recipe updated successfully!',
+                    color: 'green',
+                    message: `Your recipe has been updated.`
+                });
+            }
+
+            onSuccess();
             form.reset();
             form.setFieldValue('ingredients', []);  // Isn't being reset correctly (keeps empty object instead of null)
             setSelectedCuisineIds([])
             close();
         } catch (error: any) {
             notifications.show({
-                title: 'Recipe Creation Failed.',
+                title: mode === 'create' ? 'Recipe creation failed.' : 'Recipe update failed.',
                 color: 'red',
-                message: `Failed to create recipe. ${error.message}`
+                message: error.message
             });
         }
     }

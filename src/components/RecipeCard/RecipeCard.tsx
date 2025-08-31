@@ -5,9 +5,9 @@ import { BsThreeDotsVertical } from 'react-icons/bs';
 import classes from "./RecipeCard.module.css";
 import choppingBoardImg from '../../img/chopping_board.avif';
 import { PiLink, PiPencil, PiTrash } from 'react-icons/pi';
+import { RecipeWithCuisines } from '@/types/recipe';
 
-type Recipe = Tables<"recipes">;
-interface RecipeCardProps extends Recipe {
+interface RecipeCardProps extends RecipeWithCuisines {
   onCardClick: () => void;
 }
 

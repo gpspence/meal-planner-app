@@ -2,11 +2,11 @@ import type { Tables } from "@/types/database.types";
 import RecipeCard from '../RecipeCard/RecipeCard';
 import classes from './RecipeCards.module.css';
 import { Grid } from "@mantine/core";
+import { RecipeWithCuisines } from "@/types/recipe";
 
-type Recipe = Tables<"recipes">;
 type RecipeCardsProps = {
-    recipes: Recipe[],
-    onRecipeClick: (recipe: Recipe) => void
+    recipes: RecipeWithCuisines[],
+    onRecipeClick: (recipe: RecipeWithCuisines) => void
 }
 
 
@@ -19,7 +19,7 @@ const RecipeCards = ({ recipes, onRecipeClick }: RecipeCardsProps) => {
             p='xs'
             grow
         >
-            {recipes.map((item: Recipe, idx: number) => (
+            {recipes.map((item: RecipeWithCuisines, idx: number) => (
                 <
                     RecipeCard
                     key={idx}
