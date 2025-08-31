@@ -5,7 +5,7 @@ import classes from './RecipesPage.module.css';
 import { PiPlusCircle } from "react-icons/pi";
 import { useDisclosure } from "@mantine/hooks";
 import { loadRecipes } from "@/api/recipes";
-import { Recipe, RecipeWithCuisines } from "@/types/recipe";
+import { RecipeWithCuisines } from "@/types/recipe";
 import AddRecipeModal from "@/components/AddRecipeModal/AddRecipeModal";
 import RecipeOverlay from "@/components/RecipeOverlay/RecipeOverlay";
 import EmptyRecipeImage from "@/components/EmptyRecipeImage/EmptyRecipeImage";

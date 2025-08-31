@@ -31,7 +31,7 @@ export function useRecipeForm(
         validate: {
             title: isNotEmpty('Title cannot be empty'),
             description: isNotEmpty('Description cannot be empty'),
-            cuisine: hasLength({ min: 1 }, 'Cuisine cannot be empty'),
+            cuisine: hasLength({ min: 1, max: 3 }, 'Cuisine must have been 1 and 3 values selected'),
             prepTimeMinutes: isInRange({ min: 1 }, 'Value must be greater than 0'),
             servings: isInRange({ min: 1 }, 'Value must be greater than 0'),
             imageUrl: matchIfExists(urlRegex, "Website address must be valid if entered"),

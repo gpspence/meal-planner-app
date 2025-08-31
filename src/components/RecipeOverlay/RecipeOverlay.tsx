@@ -40,9 +40,6 @@ const RecipeOverlay = ({ opened, close, recipe, openEditModal, fetchRecipes }: R
             >
                 <Drawer.Header pt={0}>
                     <Group gap={'0.5rem'}>
-                        <Button leftSection={<PiLink />} className={classes.safeButton}>
-                            Assign to calendar
-                        </Button>
                         <Button
                         leftSection={<PiPencil />}
                         className={classes.safeButton}

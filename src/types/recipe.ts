@@ -3,16 +3,17 @@ import type { Database, Tables } from "@/types/database.types";
 // Supabase types
 export type Recipe = Tables<"recipes">;
 export type RecipeCuisine = Tables<"recipe_cuisines">;
+export type Cuisine = Tables<"cuisines">
 
 // Unioned types
-export type RecipeWithCuisines = Recipe & {
-    recipe_cuisines: (RecipeCuisine & {
-        cuisines: {
-            id: string;
-            name: string;
-        }
-    })[];
+export type RecipeCuisineWithName = RecipeCuisine & {
+    cuisines: Cuisine;
+}
+export type RecipeCuisines = {
+    recipe_cuisines: RecipeCuisineWithName[];
 };
+
+export type RecipeWithCuisines = Recipe & RecipeCuisines
 
 // Custom types
 export type Ingredient = {

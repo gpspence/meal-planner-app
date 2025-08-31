@@ -1,23 +1,21 @@
-import React from 'react';
-import { ActionIcon, Badge, Box, Button, Card, Group, Image, Menu, Text } from '@mantine/core';
-import type { Tables } from "@/types/database.types";
-import { BsThreeDotsVertical } from 'react-icons/bs';
+import { Badge, Box, Card, Group, Image, Text } from '@mantine/core';
 import classes from "./RecipeCard.module.css";
 import choppingBoardImg from '../../img/chopping_board.avif';
-import { PiLink, PiPencil, PiTrash } from 'react-icons/pi';
 import { RecipeWithCuisines } from '@/types/recipe';
+import { cleanTitle } from '@/utils/strings';
 
 interface RecipeCardProps extends RecipeWithCuisines {
   onCardClick: () => void;
 }
 
-const RecipeCard = ({ image_url, title, onCardClick }: RecipeCardProps) => {
+const RecipeCard = ({ image_url, title, recipe_cuisines, onCardClick }: RecipeCardProps) => {
 
   const imageSource: string = image_url ? image_url : choppingBoardImg;
   const TITLE_LENGTH: number = 40;
   const displayTitle: string = title.length < TITLE_LENGTH ?
     title :
     title.slice(0, TITLE_LENGTH) + "...";
+  const cuisineNames: string[] = recipe_cuisines.map(rc => rc.cuisines.name)
 
   return (
     <Card
@@ -38,8 +36,15 @@ const RecipeCard = ({ image_url, title, onCardClick }: RecipeCardProps) => {
         </Card.Section>
 
         <Card.Section>
-          <Group p={5} m={0}>
-            <Badge color="pink">{"none"}</Badge>
+          <Group p={5} m={0} gap={3} wrap='nowrap'>
+            {cuisineNames && cuisineNames.map(cuisineName =>
+              <Badge
+                color="pink"
+                style={{ textTransform: 'capitalize' }}
+              >
+                {cleanTitle(cuisineName)}
+              </Badge>
+            )}
           </Group>
         </Card.Section>
 

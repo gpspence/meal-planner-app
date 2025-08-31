@@ -1,4 +1,4 @@
-import { RecipeFormValues, NewRecipe } from '@/types/recipeForm';
+import { RecipeFormValues, NewRecipe } from '@/types/recipe';
 
 export function sanitiseForInsert(values: RecipeFormValues): NewRecipe {
     return {

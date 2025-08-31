@@ -1,4 +1,4 @@
-import { RecipeFormValues } from '@/types/recipeForm';
+import { RecipeFormValues } from '@/types/recipe';
 import { Textarea, TextInput } from '@mantine/core';
 import { UseFormReturnType } from '@mantine/form';
 

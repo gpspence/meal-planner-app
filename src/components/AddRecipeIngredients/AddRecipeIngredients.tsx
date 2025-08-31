@@ -1,5 +1,5 @@
 import React, { JSX } from 'react'
-import { RecipeFormValues, Ingredient } from '@/types/recipeForm';
+import { RecipeFormValues } from '@/types/recipe';
 import { UseFormReturnType } from '@mantine/form';
 import { Group, Box, Button, TextInput, NumberInput, Select, ActionIcon, Text } from '@mantine/core';
 import { PiTrash } from 'react-icons/pi';

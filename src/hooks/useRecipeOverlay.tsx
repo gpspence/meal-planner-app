@@ -1,17 +1,8 @@
 import { Json } from "@/types/database.types";
-import { Ingredient, RecipeInsert } from "@/types/recipeForm";
+import { Ingredient, RecipeCuisineWithName, RecipeInsert } from "@/types/recipe";
 import { Table } from "@mantine/core";
+import { cleanTitle } from '@/utils/strings'
 
-
-function toTitleCase(str: string) {
-    return str.replace(/\w\S*/g, text =>
-        text.charAt(0).toUpperCase() + text.substring(1).toLowerCase()
-    );
-}
-
-function cleanTitle(title: string) {
-    return toTitleCase(title.replaceAll('_', ' '))
-}
 
 function checkRow(key: string, value: unknown): boolean {
     const hiddenProps = ['id'];
@@ -61,8 +52,18 @@ function cleanProps(key: string, value: string | Json) {
     if (typeof value === 'string' || typeof value === 'number') {
         return cleanStrings(key, String(value));
     }
-    if (Array.isArray(value) && value.every(elem => isIngredient(elem as Ingredient))) {
+    if (
+        key === 'ingredients' &&
+        Array.isArray(value) &&
+        value.every(elem => isIngredient(elem as Ingredient))
+    ) {
         return cleanIngredients(value as Ingredient[]);
+    }
+    if (key === 'recipe_cuisines') {
+        const cuisineArray: string[] = (value as RecipeCuisineWithName[])
+            .map(rc => rc.cuisines.name);
+        const cuisineString: string = cuisineArray.join(", ")
+        return cuisineString;
     }
     return String(value) // fallback
 }
