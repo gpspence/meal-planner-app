@@ -1,11 +1,8 @@
-import { Title, Container, Tabs, Text, Flex, Button, Menu, Divider } from '@mantine/core';
-import { useContext } from 'react';
+import { Text, Flex, Button } from '@mantine/core';
 import { Link, NavigateFunction, useNavigate } from 'react-router-dom';
-import { SessionContext } from '@/App';
 import { useSession } from '@/hooks/useSession';
 import PlannerTitle from '../PlannerTitle/PlannerTitle';
 import classes from './Navbar.module.css';
-import { supabase } from '@/supabaseClient';
 
 
 const Navbar = () => {

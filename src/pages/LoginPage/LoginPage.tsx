@@ -1,11 +1,9 @@
-import React from 'react';
 import { Auth } from '@supabase/auth-ui-react';
 import { useSession } from '@/hooks/useSession';
 import { ThemeSupa, ViewType } from '@supabase/auth-ui-shared';
-import { BackgroundImage, Card, Text, Title } from '@mantine/core';
+import { Container, BackgroundImage, Card, Title } from '@mantine/core';
 import { Navigate, useSearchParams } from 'react-router-dom';
 import classes from './LoginPage.module.css';
-import { Container } from '@mantine/core';
 import backgroundImage from '../../img/background2.jpg';
 
 const allowedViews: ViewType[] = [
@@ -38,7 +36,7 @@ const LoginPage = () => {
           </Title>
           <Auth
             supabaseClient={supabase}
-            redirectTo={window.location.origin + '/'}
+            redirectTo={window.location.origin}
             appearance={{
               theme: ThemeSupa,
               variables: {

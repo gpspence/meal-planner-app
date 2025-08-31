@@ -1,6 +1,4 @@
-import type { Tables } from "@/types/database.types";
 import RecipeCard from '../RecipeCard/RecipeCard';
-import classes from './RecipeCards.module.css';
 import { Grid } from "@mantine/core";
 import { RecipeWithCuisines } from "@/types/recipe";
 

@@ -33,7 +33,7 @@ const RecipesPage = () => {
     fetchRecipes();
   }, []);
 
-  const areRecipesLoaded: Boolean = recipes.length > 0;
+  const areRecipesLoaded: boolean = recipes.length > 0;
 
   return (
     <>

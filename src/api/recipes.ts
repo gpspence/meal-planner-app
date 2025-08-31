@@ -19,7 +19,7 @@ export async function loadRecipes() {
         `)
         .order("title", { ascending: true });
 
-    if (error) throw error;
+    if (error) {throw error};
     return data as RecipeWithCuisines[];
 }
 
@@ -38,8 +38,6 @@ export async function createRecipe(recipe: NewRecipe, cuisineIds: string[]): Pro
         throw new Error("You must be logged in to add a recipe!")
     }
 
-    console.log("New recipe", recipeWithUser)
-
     const { data: createdRecipe, error: recipeError } = await supabase
         .from("recipes")
         .insert<NewRecipe>(recipeWithUser)
@@ -47,7 +45,7 @@ export async function createRecipe(recipe: NewRecipe, cuisineIds: string[]): Pro
         .single();
 
     if (recipeError) {
-        console.error("Supabase recipe insert error:", recipeError);
+        throw new Error("Supabase recipe insert error:", recipeError);
     }
 
     if (!createdRecipe) {
@@ -81,7 +79,7 @@ export async function deleteSingleRecipe(recipeId: string) {
         .select()
         .single()
     if (deleteError) {
-        console.error("Supabase recipe delete error:", deleteError);
+        throw new Error("Supabase recipe delete error:", deleteError);
     }
 
     if (!deletedRecipe) {
@@ -100,7 +98,7 @@ export async function updateRecipe(recipe: NewRecipe, id: string, cuisineIds: st
         .single();
 
     if (recipeError) {
-        console.error("Supabase recipe update error:", recipeError);
+        throw new Error("Supabase recipe update error:", recipeError);
     }
 
     if (!updatedRecipe) {

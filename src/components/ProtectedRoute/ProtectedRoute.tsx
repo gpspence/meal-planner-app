@@ -1,5 +1,5 @@
 import { useSession } from "@/hooks/useSession";
-import { Box, Center, Container, Loader } from "@mantine/core";
+import { Box, Center, Loader } from "@mantine/core";
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 
 
@@ -9,7 +9,7 @@ const ProtectedRoute = () => {
     if (session === undefined) {
         return (
             <Center>
-                <Box m={'30%'}>
+                <Box m='30%'>
                     <Loader color='blue' />
                 </Box>
             </Center>

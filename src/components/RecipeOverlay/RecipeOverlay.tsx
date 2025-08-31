@@ -1,10 +1,9 @@
 import { Button, Drawer, Group, Table } from '@mantine/core';
-import { Tables } from '@/types/database.types';
 import classes from './RecipeOverlay.module.css'
-import { PiLink, PiPencil, PiTrash } from 'react-icons/pi';
+import { PiPencil } from 'react-icons/pi';
 import { useRecipeOverlay } from '@/hooks/useRecipeOverlay';
 import DeleteRecipeButton from '../DeleteRecipeButton/DeleteRecipeButton';
-import { Recipe, RecipeWithCuisines } from '@/types/recipe';
+import { RecipeWithCuisines } from '@/types/recipe';
 
 
 type RecipeOverlayProps = {
@@ -39,17 +38,17 @@ const RecipeOverlay = ({ opened, close, recipe, openEditModal, fetchRecipes }: R
                 title={recipe.title}
             >
                 <Drawer.Header pt={0}>
-                    <Group gap={'0.5rem'}>
+                    <Group gap='0.5rem'>
                         <Button
-                        leftSection={<PiPencil />}
-                        className={classes.safeButton}
-                        onClick={handleOpenEditModal}
+                            leftSection={<PiPencil />}
+                            className={classes.safeButton}
+                            onClick={handleOpenEditModal}
                         >
                             Edit recipe
                         </Button>
                         <DeleteRecipeButton
-                        recipeId={recipe.id}
-                        onSubmit={onSubmit}
+                            recipeId={recipe.id}
+                            onSubmit={onSubmit}
                         />
                     </Group>
                 </Drawer.Header>

@@ -38,7 +38,7 @@ const EditRecipeModal = ({ opened, close, recipe, onRecipeUpdated }: UpdateRecip
 
     // Fetch existing recipe and prefill form
     useEffect(() => {
-        if (!recipe) return;
+        if (!recipe) {return;}
 
         form.setValues({
             title: recipe.title ?? '',

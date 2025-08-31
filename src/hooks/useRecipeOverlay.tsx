@@ -6,7 +6,7 @@ import { cleanTitle } from '@/utils/strings'
 
 function checkRow(key: string, value: unknown): boolean {
     const hiddenProps = ['id'];
-    const isNotEmpty: boolean = !!value && (Array.isArray(value) ? value.length != 0 : true);
+    const isNotEmpty: boolean = !!value && (Array.isArray(value) ? value.length !== 0 : true);
     const isNotHidden: boolean = !hiddenProps.includes(key);
     return isNotEmpty && isNotHidden;
 }
@@ -32,9 +32,8 @@ function cleanStrings(key: string, value: string) {
         )
     } else if (timeProps.includes(key)) {
         return new Date(value).toLocaleString()
-    } else {
-        return value
     }
+    return value
 }
 
 const isIngredient = (value: any): value is Ingredient => !!value?.name
@@ -48,7 +47,7 @@ function cleanIngredients(ingredients: Ingredient[]): string {
 }
 
 function cleanProps(key: string, value: string | Json) {
-    if (value === null) return ""
+    if (value === null) {return ""}
     if (typeof value === 'string' || typeof value === 'number') {
         return cleanStrings(key, String(value));
     }

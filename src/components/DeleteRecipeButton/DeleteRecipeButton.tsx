@@ -2,7 +2,6 @@ import { deleteSingleRecipe } from '@/api/recipes';
 import { Button, Text } from '@mantine/core'
 import { notifications } from '@mantine/notifications';
 import { modals } from '@mantine/modals';
-import React, { useState } from 'react'
 import { PiTrash } from 'react-icons/pi'
 
 type DeleteRecipeButtonProps = {
@@ -32,7 +31,6 @@ const DeleteRecipeButton = ({ recipeId, onSubmit }: DeleteRecipeButtonProps) => 
                         message: `Your recipe has been deleted from the database.`
                     });
                 } catch (error) {
-                    console.error(error);
                     notifications.show({
                         title: 'Recipe Deletion Failed.',
                         color: 'red',

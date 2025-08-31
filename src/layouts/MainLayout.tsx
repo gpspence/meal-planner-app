@@ -7,8 +7,6 @@ import { Notifications } from '@mantine/notifications';
 
 const MainLayout = () => {
 
-  const [opened, { open, close }] = useDisclosure();
-
   return (
     <>
       <div className={classes.flexRow}>

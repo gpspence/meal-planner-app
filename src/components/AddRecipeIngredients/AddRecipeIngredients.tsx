@@ -16,7 +16,7 @@ const unitOptions = [
 const AddRecipeIngredients = ({ form }: AddRecipeIngredientsProps) => {
     const ingredients = form.values.ingredients ?? [];
     const ingredientFields: JSX.Element[] = ingredients.map((_, index) => (
-        <Group key={index} mt={'xs'} wrap='nowrap'>
+        <Group key={index} mt='xs' wrap='nowrap'>
             <Box style={{ flex: 2 }}>
                 <TextInput
                     placeholder='e.g. flour'
