@@ -47,7 +47,12 @@ const AddRecipeModal = ({ opened, close, onRecipeCreated }: AddRecipeModalProps)
                     <AddRecipeIngredients
                         form={form}
                     />
-                    <Button type='submit'>Submit</Button>
+                    <Button
+                        type='submit'
+                        style={{ borderRadius: '25px' }}
+                    >
+                        Submit
+                    </Button>
                 </Stack>
             </form>
         </Modal>

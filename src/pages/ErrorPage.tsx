@@ -36,6 +36,7 @@ const ErrorPage = () => {
                     <Button
                     color='#2563eb'
                     onClick={() => navigate('/')}
+                    style={{ borderRadius: '25px' }}
                     >
                         Go back home
                     </Button>

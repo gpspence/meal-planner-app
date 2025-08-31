@@ -8,4 +8,5 @@
 .safeButton {
     background-color: #d7f4fe;
     color: black;
+    border-radius: 25px;
 }

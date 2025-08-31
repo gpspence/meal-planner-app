@@ -50,6 +50,7 @@ const DeleteRecipeButton = ({ recipeId, onSubmit }: DeleteRecipeButtonProps) => 
             leftSection={<PiTrash size={14} />}
             color='red'
             onClick={openConfirm}
+            style={{ borderRadius: '25px' }}
         >
             Delete recipe
         </Button>

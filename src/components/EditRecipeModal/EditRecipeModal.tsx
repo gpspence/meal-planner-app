@@ -69,7 +69,12 @@ const EditRecipeModal = ({ opened, close, recipe, onRecipeUpdated }: UpdateRecip
                         cuisineOptions={cuisineOptions}
                     />
                     <AddRecipeIngredients form={form} />
-                    <Button type='submit'>Update</Button>
+                    <Button
+                        type='submit'
+                        style={{ borderRadius: '25px' }}
+                    >
+                        Update
+                    </Button>
                 </Stack>
             </form>
         </Modal>

@@ -85,7 +85,8 @@ const AddRecipeIngredients = ({ form }: AddRecipeIngredientsProps) => {
                                 backgroundColor: '#D7F4FE',
                                 color: 'black',
                                 fontWeight: 400,
-                                border: '1px dashed rgb(206, 212, 218'
+                                border: '1px dashed rgb(206, 212, 218',
+                                borderRadius: '25px'
                             }}
                             onClick={() => {
                                 if (!form.values.ingredients) {

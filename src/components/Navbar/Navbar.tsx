@@ -28,7 +28,10 @@ const Navbar = () => {
             ) : (
                 <Flex gap='xs'>
                     <Link to='/login?view=sign-in'>
-                        <Button bg="none">
+                        <Button
+                        bg="none"
+                        style={{ borderRadius: '25px' }}
+                        >
                             <Text c='black' fz='14'>Sign in</Text>
                         </Button>
                     </Link>

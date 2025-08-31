@@ -45,7 +45,7 @@
     color: black;
     padding: 0px 10px;
     font-weight: 400;
-    border-radius: var(--mantine-radius-md);
+    border-radius: 25px;
 }
 
 .icons {

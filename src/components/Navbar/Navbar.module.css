@@ -1,7 +1,7 @@
 .button {
     border: none;
     background-color: #2563eb;
-    border-radius: var(--mantine-radius-md);
+    border-radius: 25px;
     color: white;
     font-size: 14px;
     font-weight: 400;
