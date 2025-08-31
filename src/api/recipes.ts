@@ -1,6 +1,4 @@
 import { supabase } from '../supabaseClient';
-import type { LoaderFunctionArgs } from 'react-router-dom';
-import { Database } from '@/types/database.types';
 import { NewRecipe, RecipeInsert, RecipeWithCuisines } from '@/types/recipe';
 
 

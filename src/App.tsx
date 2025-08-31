@@ -3,7 +3,7 @@ import { MantineProvider } from '@mantine/core';
 import { Router } from './Router';
 import { theme } from './theme';
 import { useState, useEffect, createContext } from 'react';
-import { Session, SupabaseClient } from '@supabase/supabase-js';
+import { Session } from '@supabase/supabase-js';
 import { supabase } from './supabaseClient';
 import type { SessionContextType } from './types/session';
 import { ModalsProvider } from '@mantine/modals';

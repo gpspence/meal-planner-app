@@ -18,4 +18,6 @@ export async function dayAssignmentsLoader({ params }: LoaderFunctionArgs) {
             statusText: error.message
         });
     }
+    
+    return data;
 }
