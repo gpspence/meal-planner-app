@@ -1,135 +1,137 @@
-import { supabase } from '../supabaseClient';
 import { NewRecipe, RecipeInsert, RecipeWithCuisines } from '@/types/recipe';
-
+import { supabase } from '../supabaseClient';
 
 type RecipeLink = {
-    recipe_id: string;
-    cuisine_id: string;
-}
+  recipe_id: string;
+  cuisine_id: string;
+};
 
 export async function loadRecipes() {
-    const { data, error } = await supabase
-        .from("recipes")
-        .select(`
+  const { data, error } = await supabase
+    .from('recipes')
+    .select(
+      `
             *,
             recipe_cuisines (
             cuisine_id,
             cuisines ( id, name )
             )
-        `)
-        .order("title", { ascending: true });
+        `
+    )
+    .order('title', { ascending: true });
 
-    if (error) {throw error};
-    return data as RecipeWithCuisines[];
+  if (error) {
+    throw error;
+  }
+  return data as RecipeWithCuisines[];
 }
 
-export async function createRecipe(recipe: NewRecipe, cuisineIds: string[]): Promise<RecipeInsert | undefined> {
-    const session = await supabase.auth.getSession();
-    const user = session.data.session?.user;
+export async function createRecipe(
+  recipe: NewRecipe,
+  cuisineIds: string[]
+): Promise<RecipeInsert | undefined> {
+  const session = await supabase.auth.getSession();
+  const user = session.data.session?.user;
 
-    // Create the new recipe
-    let recipeWithUser: NewRecipe
-    if (user) {
-        recipeWithUser = {
-            ...recipe,
-            added_by: user.id
-        };
-    } else {
-        throw new Error("You must be logged in to add a recipe!")
+  // Create the new recipe
+  let recipeWithUser: NewRecipe;
+  if (user) {
+    recipeWithUser = {
+      ...recipe,
+      added_by: user.id,
+    };
+  } else {
+    throw new Error('You must be logged in to add a recipe!');
+  }
+
+  const { data: createdRecipe, error: recipeError } = await supabase
+    .from('recipes')
+    .insert<NewRecipe>(recipeWithUser)
+    .select()
+    .single();
+
+  if (recipeError) {
+    throw new Error('Supabase recipe insert error:', recipeError);
+  }
+
+  if (!createdRecipe) {
+    throw new Error('POST request failed.');
+  }
+
+  // Insert the links to cuisines
+  if (cuisineIds.length > 0) {
+    const links: RecipeLink[] = cuisineIds.map((cuisine_id) => ({
+      recipe_id: createdRecipe.id,
+      cuisine_id,
+    }));
+
+    const { error: linkError } = await supabase.from('recipe_cuisines').insert(links);
+
+    if (linkError) {
+      throw new Error('Failed to link recipe to cuisines');
     }
+  }
 
-    const { data: createdRecipe, error: recipeError } = await supabase
-        .from("recipes")
-        .insert<NewRecipe>(recipeWithUser)
-        .select()
-        .single();
-
-    if (recipeError) {
-        throw new Error("Supabase recipe insert error:", recipeError);
-    }
-
-    if (!createdRecipe) {
-        throw new Error("POST request failed.")
-    }
-
-    // Insert the links to cuisines
-    if (cuisineIds.length > 0) {
-        const links: RecipeLink[] = cuisineIds.map((cuisine_id) => ({
-            recipe_id: createdRecipe.id,
-            cuisine_id
-        }))
-
-        const { error: linkError } = await supabase
-            .from("recipe_cuisines")
-            .insert(links);
-
-        if (linkError) {
-            throw new Error("Failed to link recipe to cuisines")
-        }
-    }
-
-    return createdRecipe
+  return createdRecipe;
 }
 
 export async function deleteSingleRecipe(recipeId: string) {
-    const { data: deletedRecipe, error: deleteError } = await supabase
-        .from('recipes')
-        .delete()
-        .eq('id', recipeId)
-        .select()
-        .single()
-    if (deleteError) {
-        throw new Error("Supabase recipe delete error:", deleteError);
-    }
+  const { data: deletedRecipe, error: deleteError } = await supabase
+    .from('recipes')
+    .delete()
+    .eq('id', recipeId)
+    .select()
+    .single();
+  if (deleteError) {
+    throw new Error('Supabase recipe delete error:', deleteError);
+  }
 
-    if (!deletedRecipe) {
-        throw new Error("DELETE request failed.")
-    }
+  if (!deletedRecipe) {
+    throw new Error('DELETE request failed.');
+  }
 
-    return deletedRecipe
+  return deletedRecipe;
 }
 
 export async function updateRecipe(recipe: NewRecipe, id: string, cuisineIds: string[]) {
-    const { data: updatedRecipe, error: recipeError } = await supabase
-        .from("recipes")
-        .update<NewRecipe>(recipe)
-        .eq('id', id)
-        .select()
-        .single();
+  const { data: updatedRecipe, error: recipeError } = await supabase
+    .from('recipes')
+    .update<NewRecipe>(recipe)
+    .eq('id', id)
+    .select()
+    .single();
 
-    if (recipeError) {
-        throw new Error("Supabase recipe update error:", recipeError);
+  if (recipeError) {
+    throw new Error('Supabase recipe update error:', recipeError);
+  }
+
+  if (!updatedRecipe) {
+    throw new Error('PUT request failed.');
+  }
+
+  // Clean existing cuisine links for this recipe
+  const { error: deleteError } = await supabase
+    .from('recipe_cuisines')
+    .delete()
+    .eq('recipe_id', updatedRecipe.id);
+
+  if (deleteError) {
+    throw new Error('Failed to clear old recipe_cuisine links.');
+  }
+
+  // Insert new links
+  if (cuisineIds.length > 0) {
+    const links: RecipeLink[] = cuisineIds.map((cuisine_id) => ({
+      recipe_id: updatedRecipe.id,
+      cuisine_id,
+    }));
+
+    const { error: linkError } = await supabase.from('recipe_cuisines').insert(links);
+
+    if (linkError) {
+      throw new Error('Failed to link recipe to cuisines');
     }
+  }
 
-    if (!updatedRecipe) {
-        throw new Error("PUT request failed.")
-    }
-
-    // Clean existing cuisine links for this recipe
-    const { error: deleteError } = await supabase
-        .from('recipe_cuisines')
-        .delete()
-        .eq('recipe_id', updatedRecipe.id)
-
-    if (deleteError) {
-        throw new Error("Failed to clear old recipe_cuisine links.")
-    }
-
-    // Insert new links
-    if (cuisineIds.length > 0) {
-        const links: RecipeLink[] = cuisineIds.map((cuisine_id) => ({
-            recipe_id: updatedRecipe.id,
-            cuisine_id
-        }))
-
-        const { error: linkError } = await supabase
-            .from("recipe_cuisines")
-            .insert(links);
-
-        if (linkError) {
-            throw new Error("Failed to link recipe to cuisines")
-        }
-    }
-
-    return updatedRecipe
+  return updatedRecipe;
 }

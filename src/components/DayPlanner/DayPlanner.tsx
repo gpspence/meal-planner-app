@@ -1,9 +1,7 @@
-import React from 'react'
+import React from 'react';
 
 const DayPlanner = () => {
-  return (
-    <div>DayPlanner</div>
-  )
-}
+  return <div>DayPlanner</div>;
+};
 
-export default DayPlanner
+export default DayPlanner;

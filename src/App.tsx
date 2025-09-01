@@ -1,16 +1,16 @@
 import '@mantine/core/styles.css';
-import { MantineProvider } from '@mantine/core';
-import { Router } from './Router';
-import { theme } from './theme';
-import { useState, useEffect, createContext } from 'react';
-import { Session } from '@supabase/supabase-js';
-import { supabase } from './supabaseClient';
-import type { SessionContextType } from './types/session';
-import { ModalsProvider } from '@mantine/modals';
 
+import { createContext, useEffect, useState } from 'react';
+import { Session } from '@supabase/supabase-js';
+import { MantineProvider } from '@mantine/core';
+import { ModalsProvider } from '@mantine/modals';
+import { Router } from './Router';
+import { supabase } from './supabaseClient';
+import { theme } from './theme';
+import type { SessionContextType } from './types/session';
 
 // Create a dynamic context with session data to use across the app
-export const SessionContext = createContext<SessionContextType>({ session: null, supabase })
+export const SessionContext = createContext<SessionContextType>({ session: null, supabase });
 
 export default function App() {
   const [session, setSession] = useState<Session | null | undefined>(undefined);
@@ -22,13 +22,13 @@ export default function App() {
     });
 
     const {
-      data: { subscription }
+      data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
-    })
+    });
 
     return () => subscription.unsubscribe();
-  }, [])
+  }, []);
 
   return (
     <MantineProvider theme={theme}>

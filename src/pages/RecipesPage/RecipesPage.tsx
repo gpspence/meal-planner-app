@@ -1,21 +1,21 @@
-import { useState, useEffect } from "react";
-import { Button } from "@mantine/core";
-import RecipeCards from "@/components/RecipeCards/RecipeCards";
+import { useEffect, useState } from 'react';
+import { PiPlusCircle } from 'react-icons/pi';
+import { Button } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
+import { loadRecipes } from '@/api/recipes';
+import AddRecipeModal from '@/components/AddRecipeModal/AddRecipeModal';
+import EditRecipeModal from '@/components/EditRecipeModal/EditRecipeModal';
+import EmptyRecipeImage from '@/components/EmptyRecipeImage/EmptyRecipeImage';
+import RecipeCards from '@/components/RecipeCards/RecipeCards';
+import RecipeOverlay from '@/components/RecipeOverlay/RecipeOverlay';
+import { RecipeWithCuisines } from '@/types/recipe';
 import classes from './RecipesPage.module.css';
-import { PiPlusCircle } from "react-icons/pi";
-import { useDisclosure } from "@mantine/hooks";
-import { loadRecipes } from "@/api/recipes";
-import { RecipeWithCuisines } from "@/types/recipe";
-import AddRecipeModal from "@/components/AddRecipeModal/AddRecipeModal";
-import RecipeOverlay from "@/components/RecipeOverlay/RecipeOverlay";
-import EmptyRecipeImage from "@/components/EmptyRecipeImage/EmptyRecipeImage";
-import EditRecipeModal from "@/components/EditRecipeModal/EditRecipeModal";
-
 
 const RecipesPage = () => {
   const [recipes, setRecipes] = useState<RecipeWithCuisines[]>([]);
-  const [selectedRecipe, setSelectedRecipe] = useState<RecipeWithCuisines | undefined>(undefined)
-  const [createModalOpened, { open: openCreateModal, close: closeCreateModal }] = useDisclosure(false);
+  const [selectedRecipe, setSelectedRecipe] = useState<RecipeWithCuisines | undefined>(undefined);
+  const [createModalOpened, { open: openCreateModal, close: closeCreateModal }] =
+    useDisclosure(false);
   const [editModalOpened, { open: openEditModal, close: closeEditModal }] = useDisclosure(false);
   const [overlayOpened, { open: openOverlay, close: closeOverlay }] = useDisclosure(false);
 
@@ -25,9 +25,9 @@ const RecipesPage = () => {
       const data = await loadRecipes();
       setRecipes(data);
     } catch (error) {
-      console.error("Error occurred loading recipes", error);
+      console.error('Error occurred loading recipes', error);
     }
-  }
+  };
 
   useEffect(() => {
     fetchRecipes();
@@ -72,23 +72,24 @@ const RecipesPage = () => {
             </Button>
           </div>
           <div className={classes.dashBorder}>
-            {areRecipesLoaded ?
+            {areRecipesLoaded ? (
               <RecipeCards
                 recipes={recipes}
                 onRecipeClick={(recipe) => {
                   setSelectedRecipe(recipe);
                   openOverlay();
                 }}
-              /> :
+              />
+            ) : (
               <div className={`${classes.flex} ${classes.image}`}>
                 <EmptyRecipeImage />
               </div>
-            }
+            )}
           </div>
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default RecipesPage
+export default RecipesPage;

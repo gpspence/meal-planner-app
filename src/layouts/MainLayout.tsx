@@ -1,11 +1,10 @@
 import { Outlet } from 'react-router-dom';
-import Navbar from '../components/Navbar/Navbar'
-import Aside from '@/components/Aside/Aside';
-import classes from './MainLayout.module.css'
 import { Notifications } from '@mantine/notifications';
+import Aside from '@/components/Aside/Aside';
+import Navbar from '../components/Navbar/Navbar';
+import classes from './MainLayout.module.css';
 
 const MainLayout = () => {
-
   return (
     <>
       <div className={classes.flexRow}>
@@ -19,9 +18,9 @@ const MainLayout = () => {
           </div>
         </div>
       </div>
-        <Notifications />
+      <Notifications />
     </>
   );
-}
+};
 
-export default MainLayout
+export default MainLayout;

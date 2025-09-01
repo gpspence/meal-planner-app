@@ -1,9 +1,10 @@
 export function toTitleCase(str: string) {
-    return str.replace(/\w\S*/g, text =>
-        text.charAt(0).toUpperCase() + text.substring(1).toLowerCase()
-    );
+  return str.replace(
+    /\w\S*/g,
+    (text) => text.charAt(0).toUpperCase() + text.substring(1).toLowerCase()
+  );
 }
 
 export function cleanTitle(title: string) {
-    return toTitleCase(title.replaceAll('_', ' '))
+  return toTitleCase(title.replaceAll('_', ' '));
 }

@@ -1,12 +1,11 @@
-import { Title, Text } from '@mantine/core';
 import React from 'react';
+import { Text, Title } from '@mantine/core';
 
 interface Props {
-  tabTitle: string
+  tabTitle: string;
 }
 
-const PlannerTitle: React.FC<Props> = ( {tabTitle} ) => {
-
+const PlannerTitle: React.FC<Props> = ({ tabTitle }) => {
   return (
     <Title order={2}>
       Weekly Meal{' '}
@@ -14,7 +13,7 @@ const PlannerTitle: React.FC<Props> = ( {tabTitle} ) => {
         {tabTitle}
       </Text>
     </Title>
-  )
-}
+  );
+};
 
-export default PlannerTitle
+export default PlannerTitle;
