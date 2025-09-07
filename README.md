@@ -22,7 +22,7 @@ A web application designed to help users plan their meals, manage recipes, and o
 - **Frontend:** TypeScript, HTML, CSS
 - **Framework/Library:** React + Vite
 - **Backend/API/Database:** Supabase
-- **Deployments** Vercel
+- **Deployments:** Vercel
 
 ## 🗂️ Folder Structure
 
@@ -77,7 +77,7 @@ npm run build
 yarn build
 ```
 
-## Utility Features
+## ⚙️ Utility Features
 
 This template comes with the following features:
 
