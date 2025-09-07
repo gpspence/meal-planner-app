@@ -15,7 +15,7 @@ A web application designed to help users plan their meals, manage recipes, and o
 - **Ingredient Tracking:** Keep track of ingredients you have and those you need to buy.
 - **Responsive Design:** Works beautifully on desktop and mobile devices.
 - **Weekly Meal Planning:** Easily create and manage meal plans for each day of the week.
-- **Sharing With Friends** Share meal plans and favourite recipes with friends.
+- **Sharing With Friends:** Share meal plans and favourite recipes with friends.
 
 ## 🛠️ Tech Stack
 
