@@ -6,10 +6,10 @@ export const urlRegex: RegExp =
 
 /**
 * Create function to match non-null value against regex pattern.
-* Used as form validation.
 * @param regex - pattern to match
 * @param message - message to return on no match
 * @returns - function to run to check the regex
+* @remarks Used as form validation.
 */
 export function matchIfExists(regex: RegExp, message: string): ValidatorFn {
   return (value: string | null) => {
