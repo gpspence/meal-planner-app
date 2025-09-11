@@ -1,8 +1,15 @@
 import { Table } from '@mantine/core';
 import { Json } from '@/types/database.types';
-import { Ingredient, RecipeCuisineWithName, RecipeInsert } from '@/types/recipe';
+import { Ingredient, Recipe, RecipeCuisineWithName, RecipeInsert, RecipeWithCuisines } from '@/types/recipe';
 import { cleanTitle } from '@/utils/strings';
 
+/**
+ * Check whether to display recipe properties (rows in table) based on whether
+ * they are are not null or hidden.
+ * @param key - recipe property field name, to check if the property is hidden.
+ * @param value - property value to check if is null.
+ * @returns boolean value of whether or not to display the property.
+ */
 function checkRow(key: string, value: unknown): boolean {
   const hiddenProps = ['id'];
   const isNotEmpty: boolean = !!value && (Array.isArray(value) ? value.length !== 0 : true);
@@ -67,7 +74,12 @@ function cleanProps(key: string, value: string | Json) {
   return String(value); // fallback
 }
 
-export function useRecipeOverlay(recipe: RecipeInsert) {
+/**
+ * Apply validation and cleaning to all recipe titles and values, for display in overlay.
+ * @param recipe - row in Recipe table to process
+ * @returns Mantine table rows as <Table.Tr> element.
+ */
+export function useRecipeOverlay(recipe: RecipeWithCuisines) {
   const tableRows = Object.entries(recipe).map(([key, value]) =>
     checkRow(key, value) ? (
       <Table.Tr key={key}>
@@ -78,4 +90,10 @@ export function useRecipeOverlay(recipe: RecipeInsert) {
   );
 
   return { tableRows };
+}
+
+// For hard to reach test branches
+export const __test__ = {
+  cleanProps,
+  formatUrlDisplay
 }
