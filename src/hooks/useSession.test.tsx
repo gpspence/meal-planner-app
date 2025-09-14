@@ -1,6 +1,4 @@
-import React from 'react';
 import { render } from '@test-utils';
-import { render as rtlRender } from '@testing-library/react';
 import { SessionContext } from '@/App';
 import { supabase } from '@/supabaseClient';
 import type { SessionContextType } from '@/types/session';
