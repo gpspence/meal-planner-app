@@ -1,6 +1,12 @@
 import { Table } from '@mantine/core';
 import { Json } from '@/types/database.types';
-import { Ingredient, Recipe, RecipeCuisineWithName, RecipeInsert, RecipeWithCuisines } from '@/types/recipe';
+import {
+  Ingredient,
+  Recipe,
+  RecipeCuisineWithName,
+  RecipeInsert,
+  RecipeWithCuisines,
+} from '@/types/recipe';
 import { cleanTitle } from '@/utils/strings';
 
 /**
@@ -124,5 +130,5 @@ export function useRecipeOverlay(recipe: RecipeWithCuisines) {
 // For hard to reach test branches
 export const __test__ = {
   cleanProps,
-  formatUrlDisplay
-}
+  formatUrlDisplay,
+};
