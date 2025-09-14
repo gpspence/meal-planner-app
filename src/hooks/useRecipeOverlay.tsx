@@ -17,6 +17,13 @@ function checkRow(key: string, value: unknown): boolean {
   return isNotEmpty && isNotHidden;
 }
 
+/**
+ * Process a URL string to display by only displaying hostname and pathname.
+ * @remarks Used to display URL on RecipeCards,
+ * @param url - value to process.
+ * @param withPath - whether to include the pathname, if available.
+ * @returns formatted URL string to display.
+ */
 function formatUrlDisplay(url: string, withPath: boolean = false): string {
   try {
     const u = new URL(url);
@@ -26,6 +33,12 @@ function formatUrlDisplay(url: string, withPath: boolean = false): string {
   }
 }
 
+/**
+ * Dispatcher function for Recipe property string cleaning.
+ * @param key - Recipe property name.
+ * @param value - Recipe property value.
+ * @returns Value with formatting applied, based on property type.
+ */
 function cleanStrings(key: string, value: string) {
   const urlProps = ['image_url', 'recipe_url'];
   const timeProps = ['created_at', 'updated_at'];
@@ -42,8 +55,18 @@ function cleanStrings(key: string, value: string) {
   return value;
 }
 
+/**
+ * Type guard for Ingredient.
+ * @param value - apply type narrowing on value.
+ * @returns Boolean, whether the value is the Ingredient type.
+ */
 const isIngredient = (value: any): value is Ingredient => !!value?.name;
 
+/**
+ * Concatenate ingredient properties into a single string for display.
+ * @param ingredients Recipe `ingredients` property.
+ * @returns Combined string containing details of all Recipe ingredients.
+ */
 function cleanIngredients(ingredients: Ingredient[]): string {
   return ingredients
     .map(({ name, note, unit, quantity }) =>
@@ -52,6 +75,12 @@ function cleanIngredients(ingredients: Ingredient[]): string {
     .join('; ');
 }
 
+/**
+ * Dispatcher function for cleaning all Recipe properties.
+ * @param key Recipe property name.
+ * @param value Recipe property value.
+ * @returns cleaned property as a string or JSX link (for URL props)
+ */
 function cleanProps(key: string, value: string | Json) {
   if (value === null) {
     return '';
