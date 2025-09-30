@@ -12,7 +12,7 @@ function TestComponent() {
 describe('useSession', () => {
   it('returns the session context when inside a provider', () => {
     const mockSession: SessionContextType = {
-      supabase: supabase,
+      supabase,
       session: null,
     };
 

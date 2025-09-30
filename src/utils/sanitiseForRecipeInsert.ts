@@ -1,7 +1,13 @@
+import { createRecipe } from '@/api/recipes';
+import { useRecipeForm } from '@/hooks/useRecipeForm';
 import { NewRecipe, RecipeFormValues } from '@/types/recipe';
 
 /**
- * Apply data sanitisation to RecipeFormValues, on top of Mantine validation
+ * Apply data sanitisation to RecipeFormValues, on top of Mantine validation.
+ * @remarks
+ * Removes cuisine onces form validation has been applied.
+ * Cuisines are stored separately in {@link useRecipeForm} and
+ * cuisines links are handled separately in {@link createRecipe}.
  * @param values - fields entered into addRecipeModal form
  * @returns - NewRecipe with cleaned parameters and naming expected by Supabase
  */

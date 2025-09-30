@@ -28,7 +28,7 @@ export type RecipeFormValues = {
   description: string;
   ingredients: Ingredient[];
   instructions: string;
-  cuisine: string[];
+  cuisine: string[]; // cuisine is required for form validation, but is dropped subsequently in sanitiseForInsert
   commonCarbohydrate: string;
   prepTimeMinutes: number;
   servings: number;

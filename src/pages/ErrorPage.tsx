@@ -5,7 +5,6 @@ import { Button, Code, Container, Paper, Stack, Text, Title } from '@mantine/cor
 const ErrorPage = () => {
   const error = useRouteError();
   const navigate = useNavigate();
-  console.error(error);
 
   let title = 'Something went wrong';
   let description = 'An unexpected error occurred.';

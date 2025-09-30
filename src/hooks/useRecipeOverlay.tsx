@@ -1,12 +1,6 @@
 import { Table } from '@mantine/core';
 import { Json } from '@/types/database.types';
-import {
-  Ingredient,
-  Recipe,
-  RecipeCuisineWithName,
-  RecipeInsert,
-  RecipeWithCuisines,
-} from '@/types/recipe';
+import { Ingredient, RecipeCuisineWithName, RecipeWithCuisines } from '@/types/recipe';
 import { cleanTitle } from '@/utils/strings';
 
 /**

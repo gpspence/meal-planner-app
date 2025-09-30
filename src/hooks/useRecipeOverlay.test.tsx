@@ -22,7 +22,7 @@ function HookHost({ recipe }: { recipe: RecipeWithCuisines }) {
   );
 }
 
-const { cleanProps, formatUrlDisplay } = __test__;
+const { cleanProps } = __test__;
 
 describe('useRecipeOverlay', () => {
   const exampleRecipeCuisines: RecipeCuisineWithName[] = [

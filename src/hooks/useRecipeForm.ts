@@ -57,7 +57,6 @@ export function useRecipeForm(
           message: `Your recipe has been updated.`,
         });
       }
-
       onSuccess();
       form.reset();
       form.setFieldValue('ingredients', []); // Isn't being reset correctly (keeps empty object instead of null)
