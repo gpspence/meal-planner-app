@@ -1,4 +1,4 @@
-import { Grid } from '@mantine/core';
+import { SimpleGrid } from '@mantine/core';
 import { RecipeWithCuisines } from '@/types/recipe';
 import RecipeCard from '../RecipeCard/RecipeCard';
 
@@ -9,11 +9,11 @@ type RecipeCardsProps = {
 
 const RecipeCards = ({ recipes, onRecipeClick }: RecipeCardsProps) => {
   return (
-    <Grid gutter="md" justify="left" p="xs" grow>
+    <SimpleGrid cols={{ base: 3, sm: 3, lg: 7}} spacing="xs">
       {recipes.map((item: RecipeWithCuisines, idx: number) => (
         <RecipeCard key={idx} onCardClick={() => onRecipeClick(item)} {...item} />
       ))}
-    </Grid>
+    </SimpleGrid>
   );
 };
 

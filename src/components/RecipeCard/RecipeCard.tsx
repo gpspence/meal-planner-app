@@ -24,7 +24,7 @@ const RecipeCard = ({ image_url, title, recipe_cuisines, onCardClick }: RecipeCa
       onClick={onCardClick}
       className={classes.clickableCard}
     >
-      <Box className={classes.root}>
+      <Box>
         <Card.Section>
           <Image src={imageSource} height={180} alt={title} />
         </Card.Section>
@@ -32,8 +32,8 @@ const RecipeCard = ({ image_url, title, recipe_cuisines, onCardClick }: RecipeCa
         <Card.Section>
           <Group p={5} m={0} gap={3} wrap="nowrap">
             {cuisineNames &&
-              cuisineNames.map((cuisineName) => (
-                <Badge color="pink" style={{ textTransform: 'capitalize' }}>
+              cuisineNames.map((cuisineName, idx) => (
+                <Badge key={idx} color="pink" style={{ textTransform: 'capitalize' }}>
                   {cleanTitle(cuisineName)}
                 </Badge>
               ))}
